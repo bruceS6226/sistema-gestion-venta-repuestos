@@ -1,0 +1,28 @@
+<div class="return">
+    <button (click)="retornar()" mat-icon-button matTooltip="Regresar atrás">
+        <mat-icon class="fw-bold">arrow_back</mat-icon>
+    </button>
+</div>
+<div class="container">
+    <div class="form" style="background-color: rgb(247, 255, 238); padding: 20px;
+    border-bottom: 1px solid #eeeeee;box-shadow: 2px 2px 2px 2px #f5f5f5;">
+        <form (ngSubmit)="onSubmit(categoriaForm)" #categoriaForm="ngForm">
+            <div class="form-container">
+                <h1 class="text-center">{{titulo}}</h1>
+
+                <div class="form-floating mb-3 mt-3">
+                    <input type="text" [(ngModel)]="categoria.name" name="name" required (input)="comprobarNombre()"
+                        placeholder="Nombre del categoria" #nameCategoriaInput="ngModel" class="form-control " id="name">
+                    <label for="name"><span class="text-danger">*</span>Nombre de la categoria:</label>
+                    <small class="form-text text-danger"
+                        [style.display]="(nameCategoriaInput.invalid && nameCategoriaInput.touched) ? 'block' : 'none'">
+                        Debe llenar este campo obligatorio
+                    </small>
+                </div>
+            </div>
+            <div class="mt-3">
+                <button class="w-100" mat-raised-button color="primary" type="submit">{{buttonName}}</button>
+            </div>
+        </form>
+    </div>
+</div>

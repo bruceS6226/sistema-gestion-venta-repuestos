@@ -1,0 +1,63 @@
+<div class="wrapper">
+    <div class="d-md-flex align-items-center">
+        <img class="logo" src="../../../assets/img/login.png" alt="img login">
+        <h2 class="mx-3 mt-2">INICIO DE SESIÓN</h2>
+    </div>
+    <div class="signin mt-3">
+        <form #usuarioForm="ngForm" (ngSubmit)="ingresarUsuario(usuarioForm, btn)">
+            <div class="form-floating mt-1 mb-3">
+                <input type="email" id="email" name="email" placeholder="Correo electrónico" class="form-control"
+                    required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}" [(ngModel)]="email" #emailInput="ngModel">
+                <label for="email"><span class="text-danger">*</span>Correo electrónico:</label>
+                <small id="mensajeErrorCelular" class="form-text text-danger"
+                    [style.display]="(emailInput.invalid && emailInput.touched) ? 'block' : 'none'">
+                    Ingrese un correo electrónico válido (ejemplo@email.com).</small>
+            </div>
+            <div class="mt-3 mb-3">
+                <div class="form-floating position-relative">
+                    <input [type]="mostrarPassword ? 'text' : 'password'" name="password" id="password"
+                        placeholder="Contraseña" class="form-control" required [(ngModel)]="password"
+                        pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$" #passwordInput="ngModel">
+                    <label for="password"><span class="text-danger">*</span>Contraseña:</label>
+                    <button type="button" class="btn position-absolute top-50 end-0 translate-middle-y"
+                        (click)="mostrarPasswordFuntion()" style="border: none; background: transparent;">
+                        <mat-icon>{{ mostrarPassword ? 'visibility' : 'visibility_off' }}</mat-icon>
+                    </button>
+                </div>
+                <small id="mensajeErrorTexto" class="form-text text-danger"
+                    [style.display]="(passwordInput.invalid && passwordInput.touched) ? 'block' : 'none'">
+                    Ingresar al menos 8 caracteres, que incluya letras y números.</small>
+            </div>
+            <div class="d-grid gap-2 mt-3 mb-3">
+                <button class="w-100" type="submit" mat-raised-button color="primary" #btn
+                    (click)="btn.disabled = true; ingresarUsuario(usuarioForm, btn)">
+                    <ng-container *ngIf="!btn.disabled; else loadingTemplate">
+                        <i class="bi bi-box-arrow-in-right"></i> INGRESAR
+                    </ng-container>
+                    <ng-template #loadingTemplate>
+                        <mat-progress-spinner #spinner [diameter]="24" mode="indeterminate"></mat-progress-spinner>
+                    </ng-template>
+                </button>
+            </div>
+        </form>
+        <div class="separator mt-2 mb-2">
+            <span>ó</span>
+        </div>
+        <div class="mt-3 mb-3">
+            <a href="{{this.apiUrl}}auth/google">
+                <button type="button" mat-raised-button class="w-100 button-google">
+                    <i class="bi bi-google"></i> Continuar con Google
+                </button>
+            </a>
+        </div>
+        <div class="d-grid gap-2 mt-1 mb-3" style="text-align: center;">
+            <p class="mt-1">¿No tienes cuenta? <a class="text-primary text-decoration-underline"
+                    routerLink="/signin">Registrarse</a></p>
+        </div>
+        <a routerLink="/acceso">
+            <button type="button" mat-mini-fab color="primary" matTooltip="Atrás">
+                <mat-icon>arrow_back</mat-icon>
+            </button>
+        </a>
+    </div>
+</div>

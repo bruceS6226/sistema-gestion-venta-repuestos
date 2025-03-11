@@ -1,0 +1,184 @@
+<div class="return">
+    <button (click)="retornar()" mat-icon-button matTooltip="Regresar atrás">
+        <mat-icon class="fw-bold">arrow_back</mat-icon>
+    </button>
+</div>
+<div class="container">
+    <div class="form" style="background-color: rgb(247, 255, 238); padding: 20px;
+    border-bottom: 1px solid #eeeeee;box-shadow: 2px 2px 2px 2px #f5f5f5;">
+        <form (ngSubmit)="onSubmit(repuestoForm)" #repuestoForm="ngForm">
+            <div class="form-container">
+                <h1 class="text-center">{{titulo}}</h1>
+                <div class="form-floating">
+                    <input type="text" [(ngModel)]="repuesto.code" name="Código" required (input)="comprobarCodigo()"
+                        placeholder="Código del repuesto" #codeRepuestoInput="ngModel" class="form-control" id="code"
+                        [disabled]="isCode">
+                    <label for="code"><span class="text-danger">*</span>Código del repuesto:</label>
+                    <small class="form-text text-danger"
+                        [style.display]="(codeRepuestoInput.invalid && codeRepuestoInput.touched) ? 'block' : 'none'">
+                        Debe llenar este campo obligatorio
+                    </small>
+                    <small id="verificarNombreCuenta" class="form-text text-danger"
+                        [style.display]="(!codeRepuestoInput.invalid && existeCode) ? 'block' : 'none'">
+                        Este código de repuesto ya existe.
+                    </small>
+                    <small class="form-text text-success"
+                        [style.display]="(codeRepuestoInput.valid && codeRepuestoInput.touched) ? 'block' : 'none'">
+                        Este campo no se podrá editar, porfavor revisar bien antes de crear el nuevo repuesto
+                    </small>
+                </div>
+
+                <div class="form-floating mb-3 mt-3">
+                    <input type="text" [(ngModel)]="repuesto.name" name="Nombre" required
+                        placeholder="Nombre del repuesto" #nameRepuestoInput="ngModel" class="form-control " id="name">
+                    <label for="name"><span class="text-danger">*</span>Nombre del repuesto:</label>
+                    <small class="form-text text-danger"
+                        [style.display]="(nameRepuestoInput.invalid && nameRepuestoInput.touched) ? 'block' : 'none'">
+                        Debe llenar este campo obligatorio
+                    </small>
+                </div>
+                <div class="form-floating mb-3 mt-3">
+                    <input type="text" [(ngModel)]="repuesto.description" name="Descripción" required
+                        placeholder="Descripción del repuesto" #descriptionRepuestoInput="ngModel" class="form-control"
+                        id="description">
+                    <label for="description"><span class="text-danger">*</span>Descripción del repuesto:</label>
+                    <small class="form-text text-danger"
+                        [style.display]="(descriptionRepuestoInput.invalid && descriptionRepuestoInput.touched) ? 'block' : 'none'">
+                        Debe llenar este campo obligatorio
+                    </small>
+                </div>
+                <div class="form-floating mb-3 mt-3">
+                    <input type="number" [(ngModel)]="repuesto.stock" name="Stock" required
+                        placeholder="Stock del repuesto" #stockRepuestoInput="ngModel" class="form-control" id="stock"
+                        pattern="^\d+$">
+                    <label for="stock"><span class="text-danger">*</span>Stock del repuesto:</label>
+                    <small class="form-text text-danger"
+                        [style.display]="(stockRepuestoInput.invalid && stockRepuestoInput.touched) ? 'block' : 'none'">
+                        Ingresar solo números mayores que 0
+                    </small>
+                </div>
+                <div class="form-floating mb-3 mt-3">
+                    <input type="text" [(ngModel)]="repuesto.price" name="Precio" required placeholder="Precio"
+                        #priceRepuestoInput="ngModel" class="form-control" id="price" pattern="^\d+(\.\d{1,2})?$">
+                    <label for="price"><span class="text-danger">*</span>Precio:</label>
+                    <small class="form-text text-danger"
+                        [style.display]="(priceRepuestoInput.invalid && priceRepuestoInput.touched) ? 'block' : 'none'">
+                        Ingresar solo números mayores que 0 de la forma "0.00"
+                    </small>
+                </div>
+            </div>
+
+            <div class="image-upload-container">
+                <div class="row row-cols-lg-6">
+                    <ng-container *ngFor="let image of images.controls; let i = index">
+                        <div class="col m-1" style="width: 150px;">
+                            <div>
+                                <div class="position-relative">
+                                    <button mat-mini-fab color="warn" (click)="removeImage(i)" *ngIf="i > 0"
+                                        type="button" class="position-absolute shadow-none top-0 rounded-0"
+                                        style="z-index: 100;" matTooltipPosition="right" matTooltip="Eliminar imagen">
+                                        <mat-icon>close</mat-icon>
+                                    </button>
+                                </div>
+                                <div class="card cardSecundaria">
+                                    <ng-container *ngIf="i === 0 && !image.get('previewUrl')!.value">
+                                        <span class="text-center"><span class="text-danger">*</span>Imagen
+                                            principal</span>
+                                    </ng-container>
+                                    <img *ngIf="image.get('previewUrl')!.value" [src]="image.get('previewUrl')!.value"
+                                        alt="Preview" class="imagenSecundaria">
+                                </div>
+                                <input type="file" (change)="onFileChange($event, i)" style="font-size: 7px;"
+                                    placeholder="Imagen" accept="image/png, image/jpg, image/jpeg" required>
+                            </div>
+                        </div>
+                    </ng-container>
+                    <div class="align-content-center" style="width: 65px;">
+                        <button mat-fab color="link" (click)="addImage()" matTooltipPosition="right"
+                            *ngIf="images.length < 5" type="button"
+                            matTooltip="Agregar una nueva imagen">
+                            <mat-icon>add</mat-icon>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <table class="table table-bordered align-content-center">
+                <thead>
+                    <tr>
+                        <th scope="col" class="text-left"><span class="text-danger">*</span>Categoría</th>
+                        <th scope="col" class="text-left"><span class="text-danger">*</span>Marca</th>
+                        <th scope="col" class="text-right"><span class="text-danger">*</span>Tipo</th>
+                        <th scope="col" class="text-right"><span class="text-danger">*</span>Modelo</th>
+                        <th scope="col" class="text-right"><span class="text-danger">*</span>Año</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="font-light text-left">
+                            <select class="form-select" [(ngModel)]="repuesto.category" name="Categoría" required
+                                placeholder="Categoría">
+                                <option value="" selected></option>
+                                <option value="Motor" style="color: black">Motor</option>
+                                <option value="Transmisión" style="color: black">Transmisión</option>
+                                <option value="Suspensión" style="color: black">Suspensión</option>
+                                <option value="Frenos" style="color: black">Frenos</option>
+                                <option value="Escape" style="color: black">Escape</option>
+                                <option value="Eléctrico" style="color: black">Eléctrico</option>
+                                <option value="Refrigeración" style="color: black">Refrigeración</option>
+                                <option value="Interior" style="color: black">Interior</option>
+                                <option value="Exterior" style="color: black">Exterior</option>
+                                <option value="Dirección" style="color: black">Dirección</option>
+                            </select>
+                        </td>
+                        <td class="font-light text-left">
+                            <select class="form-select" [(ngModel)]="repuesto.brand" name="Marca" required (change)="cambiarMarca($event)"
+                                placeholder="Marca">
+                                <option value="" selected></option>
+                                <option style="color: black" *ngFor="let marca of marcas" [value]="marca.name">{{
+                                    marca.name }}
+                                </option>
+                            </select>
+                        </td>
+                        <td class="font-light text-left">
+                            <select class="form-select" [(ngModel)]="repuesto.brandModel" name="Modelo" required (change)="cambiarModelo($event)"
+                                placeholder="Modelo">
+                                <option value="" selected></option>
+                                <option style="color: black" *ngFor="let modelo of modelos" [value]="modelo.name">{{
+                                    modelo.name }}
+                                </option>
+                            </select>
+                        </td>
+                        <td class="font-light text-left">
+                            <select class="form-select" [(ngModel)]="repuesto.modelType" name="Tipo" required
+                                placeholder="Tipo">
+                                <option value="" selected></option>
+                                <option style="color: black" *ngFor="let tipo of tipos" [value]="tipo.name">{{
+                                    tipo.name }}
+                                </option>
+                            </select>
+                        </td>
+                        <td class="font-light text-left">
+                            <select class="form-select" [(ngModel)]="repuesto.modelTypeYear" name="Año"
+                                required placeholder="Año">
+                                <option value="" selected></option>
+                                <option value="2024" style="color: black">2024</option>
+                                <option value="2023" style="color: black">2023</option>
+                                <option value="2022" style="color: black">2022</option>
+                                <option value="2021" style="color: black">2021</option>
+                                <option value="2020" style="color: black">2020</option>
+                                <option value="2019" style="color: black">2019</option>
+                                <option value="2018" style="color: black">2018</option>
+                                <option value="2017" style="color: black">2017</option>
+                                <option value="2016" style="color: black">2016</option>
+                                <option value="2015" style="color: black">2015</option>
+                            </select>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="mt-3">
+                <button class="w-100" mat-raised-button color="primary" type="submit">{{buttonName}}</button>
+            </div>
+        </form>
+    </div>
+</div>

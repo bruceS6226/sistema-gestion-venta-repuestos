@@ -1,0 +1,71 @@
+<div class="container" style="justify-content: space-between;">
+    <div class="titulo gap-1 w-100">
+        <span class="m-0">TODAS LAS MARCAS DE VEHÍCULOS</span>
+    </div>
+    <div class="row row-cols-1 row-cols-lg-2 row-cols-xl-3 row-cols-xxl-4">
+        <ng-container *ngFor="let marca of marcas; let i = index">
+            <div class="col py-1">
+                <div class="card text-center">
+                    <a href="/spare-part?brand={{marca.name}}">
+                        <img class="imagenRepuesto" src="{{marca.image}}" alt="">
+                    </a>
+                </div>
+            </div>
+        </ng-container>
+    </div>
+    <div class="titulo gap-1 mt-4 w-100">
+        <span class="m-0">TODOS LOS REPUESTOS</span>
+    </div>
+    <ng-container *ngIf="!cargando; else spinnerCargando">
+        <div class="repuestos row row-cols-1 row-cols-lg-2 row-cols-xl-3 row-cols-xxl-4">
+            <ng-container *ngIf="repuestos.length > 0; else noRepuestos">
+                <ng-container *ngFor="let repuesto of repuestosPorPagina; let i = index">
+                    <div class="col py-1">
+                        <div class="card text-center">
+                            <a href="/repuesto/{{repuesto.code}}">
+                                <img class="imagenRepuesto" src="{{repuesto.images?.[0]}}" alt="">
+                                <p class="card-text mt-2" style="color: rgb(180, 0, 0);">Código: {{repuesto.code}}</p>
+                                <h2 class="card-title fw-bold">{{repuesto.name}}</h2>
+                                <p class="marca-vhc card-text">
+                                    <a href="/spare-part?category={{repuesto.category}}">Categoría:
+                                        {{repuesto.category}}</a>
+                                </p>
+                                <p class="marca-vhc card-text">
+                                    <a href="/spare-part?brand={{repuesto.brand}}" style="color: rgb(204, 0, 0);">Marca
+                                        VHC:
+                                        {{repuesto.brand}}</a>
+                                </p>
+                                <h4 style="color: #3f51b5;" class="fw-bold align-content-center">
+                                    <span>Precio: ${{repuesto.price}}</span>
+                                </h4>
+                            </a>
+                            <div class="card-body">
+                                <button class="w-100" type="button" mat-raised-button
+                                    [color]="!isAdded[i] ? 'primary' : 'link'" (click)="agregarAlCarrito(repuesto, i)">
+                                    <div *ngIf="!isAdded[i]">
+                                        <i class="bi bi-cart-plus-fill"></i> Agregar al carrito
+                                    </div>
+                                    <div>
+                                        <i style="font-size: 23px;" *ngIf="isAdded[i]"
+                                            class="bi bi-cart-check-fill text-success"></i>
+                                    </div>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+            </ng-container>
+            <ng-template #noRepuestos>
+                <h3 class="w-100 text-center mt-4">No hay repuestos disponibles</h3>
+            </ng-template>
+        </div>
+    </ng-container>
+    <ng-template #spinnerCargando>
+        <div class="d-flex justify-content-center align-items-center" style="height: 65vh;">
+            <mat-spinner></mat-spinner>
+        </div>
+    </ng-template>
+    <mat-paginator class="custom-paginator w-100" [hidePageSize]="true" [length]="cantidadRepuestos"
+        [pageSize]="tamanioPagina" (page)="cambiarPagina($event)">
+    </mat-paginator>
+</div>

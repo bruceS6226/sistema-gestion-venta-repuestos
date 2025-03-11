@@ -1,0 +1,78 @@
+<div class="return">
+    <button (click)="retornar()" mat-icon-button matTooltip="Regresar atrás">
+        <mat-icon class="fw-bold">arrow_back</mat-icon>
+    </button>
+</div>
+<div class="container">
+    <div class="row row-cols-2 row-cols-lg-3 d-flex justify-content-center align-items-center py-3">
+        <div class="col-lg-1">
+            <ng-container *ngFor="let foto of repuesto.images; let i = index">
+                <div class="card cardSecundaria" (click)="seleccionarFotoSecundaria(foto)">
+                    <img class="imagenSecundaria" src="{{repuesto.images?.[i]}}" alt="">
+                </div>
+            </ng-container>
+        </div>
+        <div class="col-lg-6">
+            <div class="card text-center">
+                <div class="imagenPrincipalContainer">
+                    <lib-ngx-image-zoom class="imagenRepuesto" [thumbImage]="fotoAmpliada" [fullImage]="fotoAmpliada"
+                        [magnification]="1.1" [enableScrollZoom]="true" [enableLens]="true" [lensWidth]="200"
+                        [lensHeight]="200" [circularLens]="true">
+                    </lib-ngx-image-zoom>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-5">
+            <div class="text-start">
+                <h1 class="card-text fw-bold">{{repuesto.name}}</h1>
+                <h2 class="card-text">Código del repuesto: {{repuesto.code}}</h2>
+                <h2 class="card-text">Categoría: {{repuesto.category}}</h2>
+            </div>
+            <br>
+            <h3 class="card-text">
+                <div class="marca-vhc">
+                    <a href="/spare-part?brand={{repuesto.brand}}">Marca: {{repuesto.brand}}</a>
+                </div>
+                <div class="marca-vhc">
+                    <a href="/spare-part?brandModel={{repuesto.brandModel}}">Modelo: {{repuesto.brandModel}}</a>
+                </div>
+                <div class="marca-vhc">
+                    <a href="/spare-part?modelType={{repuesto.modelType}}">Tipo: {{repuesto.modelType}}</a>
+                </div>
+                <div class="marca-vhc">
+                    <a href="/spare-part?modelTypeYear={{repuesto.modelTypeYear}}">Año: {{repuesto.modelTypeYear}}</a>
+                </div>
+            </h3>
+            <h3 class="card-text">Precio: ${{repuesto.price}} (incluye IVA)</h3>
+            <br>
+            <h3 class="card-text fw-bold">
+                <span [ngStyle]="{'color': repuesto.stock > 0 ? 'green' : 'red'}"
+                    *ngIf="repuesto && repuesto.stock !== null && repuesto.stock !== undefined">
+                    {{ repuesto.stock > 0 ? repuesto.stock + ' DISPONIBLE/S' : 'NO DISPONIBLE' }}
+                </span>
+            </h3>
+            <h2 class="font-weight-bold" class="text-danger"
+                *ngIf="!repuesto || repuesto.stock === null || repuesto.stock === undefined">
+                NO DISPONIBLE
+            </h2>
+            <br>
+            
+            <button class="w-100" type="button" mat-raised-button
+            [color]="!isAdded ? 'primary' : 'link'"
+            (click)="agregarAlCarrito(repuesto)">
+            <div *ngIf="!isAdded">
+                <i class="bi bi-cart-plus-fill"></i> Agregar al carrito
+            </div>
+            <div>
+                <i style="font-size: 23px;" *ngIf="isAdded"
+                    class="bi bi-cart-check-fill text-success"></i>
+            </div>
+        </button>
+        </div>
+    </div>
+    <br>
+    <div class="text-start w-100">
+        <h1 class="card-text text-start"><b>Detalle del producto</b></h1>
+        <h3 class="card-text">{{repuesto.description}}</h3>
+    </div>
+</div>

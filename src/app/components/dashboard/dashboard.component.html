@@ -1,0 +1,21 @@
+<div class="container">
+    <div class="container-fluid">
+        <div class="tab-content">
+            <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start" class="w-100" animationDuration="0ms"
+                [(selectedIndex)]="selectedTabIndex" (selectedIndexChange)="changeFragment($event)">
+                <mat-tab label="REPUESTOS">
+                    <app-repuestos></app-repuestos>
+                </mat-tab>
+                <mat-tab label="USUARIOS">
+                    <app-usuarios></app-usuarios>
+                </mat-tab>
+                <mat-tab label="CATEGORIAS">
+                    <app-categorias></app-categorias>
+                </mat-tab>
+                <mat-tab label="MARCAS">
+                    <app-marcas></app-marcas>
+                </mat-tab>
+            </mat-tab-group>
+        </div>
+    </div>
+</div>

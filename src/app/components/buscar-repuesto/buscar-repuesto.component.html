@@ -1,0 +1,121 @@
+<div class="return">
+    <button (click)="retornar()" mat-icon-button>
+        <mat-icon class="fw-bold">arrow_back</mat-icon>
+    </button>
+</div>
+<div class="container" style="justify-content: space-between;">
+    <div class="row row-cols-1 row-cols-lg-3 w-100">
+        <div class="col-lg-3 ">
+            <div class="categorias">
+                <div class="titulo d-block" style="background-color: #F2F2F2;">
+                    <span class="w-100 m-0 text-center"><i class="bi bi-car-front-fill"></i> FILTRO DE BÚSQUEDA</span><br>
+                </div>
+                <form class="card p-2 mt-1" style="background-color: #F2F2F2;">
+                    <select class="form-select p-3" name="categoria" [ngModel]="selectedCategory"
+                        (change)="cambiarCategoria($event)"
+                        [ngStyle]="{'color': (categoria.value ? 'black' : 'rgb(150, 150, 150)')}" #categoria>
+                        <option style="color: rgb(150, 150, 150);" value="" selected>Seleccione el categoría</option>
+                        <option style="color: black" *ngFor="let categoria of categorias" [value]="categoria.name">{{
+                            categoria.name }}
+                        </option>
+                    </select>
+                    <select class="form-select p-3 mt-2" name="brand" (change)="cambiarMarca($event)"
+                        [ngModel]="selectedBrand" [ngStyle]="{'color': (brand.value ? 'black' : 'rgb(150, 150, 150)')}"
+                        #brand>
+                        <option style="color: rgb(150, 150, 150);" value="" selected>Seleccione la marca</option>
+                        <option style="color: black" *ngFor="let marca of marcas" [value]="marca.name">{{
+                            marca.name }}
+                        </option>
+                    </select>
+                    <select *ngIf="modelos.length > 0" class="form-select p-3 mt-2" name="brandModel"
+                        (change)="cambiarModelo($event)" [ngModel]="selectedModel"
+                        [ngStyle]="{'color': (brandModel.value ? 'black' : 'rgb(150, 150, 150)')}" #brandModel>
+                        <option style="color: rgb(150, 150, 150);" value="" selected>Seleccione el modelo</option>
+                        <option style="color: black" *ngFor="let modelo of modelos" [value]="modelo.name">{{
+                            modelo.name }}
+                        </option>
+                    </select>
+                    <select *ngIf="tipos.length > 0" class="form-select p-3 mt-2" name="modelType"
+                        (change)="cambiarTipo($event)" [ngModel]="selectedModelType"
+                        [ngStyle]="{'color': (modelType.value ? 'black' : 'rgb(150, 150, 150)')}" #modelType>
+                        <option style="color: rgb(150, 150, 150);" value="" selected>Seleccione el tipo</option>
+                        <option style="color: black" *ngFor="let tipo of tipos" [value]="tipo.name">{{
+                            tipo.name }}
+                        </option>
+                    </select>
+                    <select *ngIf="anios.length > 0" class="form-select p-3 mt-2" name="anio" [ngModel]="selectedYear"
+                        (change)="cambiarAnio($event)" [ngModel]="selectedYear"
+                        [ngStyle]="{'color': (anio.value ? 'black' : 'rgb(150, 150, 150)')}" #anio>
+                        <option style="color: rgb(150, 150, 150);" value="" selected>Seleccione el año</option>
+                        <option style="color: black" *ngFor="let anio of anios" [value]="anio">{{
+                            anio }}
+                        </option>
+                    </select>
+                </form>
+            </div>
+        </div>
+        <div class="col-lg-9">
+            <div class="titulo gap-1">
+                <mat-icon>pageview</mat-icon>
+                <span class="m-0">RESULTADOS:</span>
+            </div>
+            <ng-container *ngIf="!cargando; else spinnerCargando">
+                <div class="row row-cols-1 row-cols-lg-2 row-cols-xl-3 row-cols-xxl-4">
+                    <ng-container *ngIf="repuestos.length > 0; else noRepuestos">
+                        <ng-container *ngFor="let repuesto of repuestosPorPagina; let i = index">
+                            <div class="col py-1">
+                                <div class="card text-center">
+                                    <a href="/repuesto/{{repuesto.code}}">
+                                        <img class="imagenRepuesto" src="{{repuesto.images?.[0]}}" alt="">
+                                        <p class="card-text" style="color: rgb(180, 0, 0);">Código: {{repuesto.code}}
+                                        </p>
+                                        <h2 class="card-title fw-bold">{{repuesto.name}}</h2>
+                                        <p class="marca-vhc card-text">
+                                            <a href="/spare-part?category={{repuesto.category}}">Categoría:
+                                                {{repuesto.category}}</a>
+                                        </p>
+                                        <p class="marca-vhc card-text">
+                                            <a href="/spare-part?brand={{repuesto.brand}}"
+                                                style="color: rgb(204, 0, 0);">Marca VHC:
+                                                {{repuesto.brand}}</a>
+                                        </p>
+                                        <div class="card-text" style="display: flex; justify-content: center; ">
+                                            <div style="display: flex; align-items: center;">
+                                                <h4 style="color: #3f51b5;" class="fw-bold">Precio: ${{repuesto.price}}
+                                                </h4>
+                                            </div>
+                                        </div>
+                                    </a>
+                                    <div class="card-body">
+                                        <button class="w-100" type="button" mat-raised-button
+                                            [color]="!isAdded[i] ? 'primary' : 'link'"
+                                            (click)="agregarAlCarrito(repuesto, i)">
+                                            <div *ngIf="!isAdded[i]">
+                                                <i class="bi bi-cart-plus-fill"></i> Agregar al carrito
+                                            </div>
+                                            <div>
+                                                <i style="font-size: 23px;" *ngIf="isAdded[i]"
+                                                    class="bi bi-cart-check-fill text-success"></i>
+                                            </div>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-container>
+                    </ng-container>
+                    <ng-template #noRepuestos>
+                        <h3 class="w-100 text-center mt-4">No hay repuestos disponibles</h3>
+                    </ng-template>
+                </div>
+            </ng-container>
+            <ng-template #spinnerCargando>
+                <div class="d-flex justify-content-center align-items-center" style="height: 65vh;">
+                    <mat-spinner></mat-spinner>
+                </div>
+            </ng-template>
+            <mat-paginator class="custom-paginator" [hidePageSize]="true" [length]="cantidadRepuestos"
+                [pageSize]="tamanioPagina" (page)="cambiarPagina($event)">
+            </mat-paginator>
+        </div>
+    </div>
+</div>

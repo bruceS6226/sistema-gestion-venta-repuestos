@@ -1,0 +1,6 @@
+th {
+    position: sticky;
+    top: 0; /* Posición en la que el encabezado se quedará pegado */
+    background-color: white; /* Color de fondo para que el texto sea legible */
+    z-index: 10; /* Asegura que esté por encima del contenido */
+}

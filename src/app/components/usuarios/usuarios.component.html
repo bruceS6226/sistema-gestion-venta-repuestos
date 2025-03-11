@@ -1,0 +1,34 @@
+<div class="container-fluid mt-3" style="width: 100%;">
+    <div class="tab-content">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col"></th>
+                    <th scope="col">Rol</th>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Correo electrónico</th>
+                    <th scope="col">Activo</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let u of usuarios">
+                    <td>
+                        <button style="margin: -10px;" mat-icon-button color="primary"
+                            (click)="cambiarRolUsuario(u._id!, u.roles!)"
+                            matTooltip="Camniar el rol de '{{u.userName}}'" matTooltipPosition="right">
+                            <i class="bi bi-person-fill-gear"></i>
+                        </button>
+                    </td>
+                    <td>{{ u.roles }}</td>
+                    <td>{{ u.userName }}</td>
+                    <td>{{ u.email }}</td>
+                    <td>
+                        <mat-slide-toggle color="warn" [checked]="u.isActive"
+                        (change)="abrirDialogoEsActivo(u._id!, u.userName!, u.isActive!)">
+                        </mat-slide-toggle>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

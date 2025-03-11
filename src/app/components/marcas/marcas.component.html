@@ -1,0 +1,63 @@
+<div style="display: flex; justify-content: flex-end; align-items: center; position: absolute; right: 0;">
+  <a mat-mini-fab color="primary" matTooltip="Agregar una nueva marca" matTooltipPosition="right" href="/create-marca">
+    <mat-icon>add</mat-icon>
+  </a>
+</div>
+<div class="container-fluid mt-3" style="width: 100%;">
+  <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
+    <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
+      <button mat-icon-button disabled></button>
+      <button *ngIf="treeControl.getLevel(node) === 2" mat-button class="fw-normal d-flex justify-content-start">
+        {{ node.name }}</button>
+      <button *ngIf="treeControl.getLevel(node) < 2" mat-button
+        (click)="alAbrirMenu(treeControl.getLevel(node), node._id)" [matMenuTriggerFor]="menu"
+        class="fw-normal d-flex justify-content-start">
+        {{ node.name }}</button>
+    </mat-tree-node>
+
+    <mat-tree-node *matTreeNodeDef="let node; when: hasChild" matTreeNodePadding>
+      <button mat-icon-button matTreeNodeToggle [attr.aria-label]="'Toggle ' + node.name">
+        <mat-icon class="mat-icon-rtl-mirror">
+          {{ treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right' }}
+        </mat-icon>
+      </button>
+      <button mat-button [matMenuTriggerFor]="menu" (click)="alAbrirMenu(treeControl.getLevel(node), node._id)"
+        class="fw-normal d-flex justify-content-start">
+        {{ node.name }}</button>
+    </mat-tree-node>
+  </mat-tree>
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item *ngIf="nodoSeleccionado === 0">
+      <mat-icon>add</mat-icon> Agregar un nuevo modelo 
+    </button>
+    <button mat-menu-item *ngIf="nodoSeleccionado === 0">
+      <mat-icon>edit</mat-icon>
+      <a href="/edit-marca">Editar marca</a>
+    </button>
+    <button mat-menu-item *ngIf="nodoSeleccionado === 0">
+      <mat-icon>delete</mat-icon>
+      <a>Eliminar marca</a>
+    </button>
+
+    <button mat-menu-item *ngIf="nodoSeleccionado === 1">
+      <mat-icon>add</mat-icon> Agregar un nuevo tipo
+    </button>
+    <button mat-menu-item *ngIf="nodoSeleccionado === 1">
+      <mat-icon>edit</mat-icon>
+      <a href="/edit-marca">Editar modelo</a>
+    </button>
+    <button mat-menu-item *ngIf="nodoSeleccionado === 1">
+      <mat-icon>delete</mat-icon>
+      <a>Eliminar modelo</a>
+    </button>
+
+    <button mat-menu-item *ngIf="nodoSeleccionado === 2">
+      <mat-icon>edit</mat-icon>
+      <a href="/edit-marca">Editar tipo</a>
+    </button>
+    <button mat-menu-item *ngIf="nodoSeleccionado === 2">
+      <mat-icon>delete</mat-icon>
+      <a>Eliminar tipo</a>
+    </button>
+  </mat-menu>
+</div>

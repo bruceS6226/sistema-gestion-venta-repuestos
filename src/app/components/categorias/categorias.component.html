@@ -1,0 +1,37 @@
+<div style="display: flex; justify-content: flex-end; align-items: center; position: absolute; right: 0;">
+    <a mat-mini-fab color="primary" matTooltip="Agregar una nueva categoría" matTooltipPosition="right"
+        href="/create-categoria">
+        <mat-icon>add</mat-icon>
+    </a>
+</div>
+<div class="container-fluid mt-3" style="width: 100%;">
+    <div class="tab-content">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                    <th scope="col">Nombre</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let c of categorias">
+                    <td>
+                        <a style="margin: -10px;" mat-icon-button color="primary" href="edit-categoria/{{c._id}}"
+                            matTooltip="Editar la categoría '{{c.name}}'" matTooltipPosition="right">
+                            <mat-icon>edit</mat-icon>
+                        </a>
+                    </td>
+                    <td>
+                        <button style="margin: -10px;" mat-icon-button color="warn"
+                            (click)="abrirDialogEliminar(c._id,c.name)" matTooltip="Eliminar la categoría '{{c.name}}'"
+                            matTooltipPosition="right">
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                    </td>
+                    <td>{{ c.name }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

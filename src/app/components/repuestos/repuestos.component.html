@@ -1,0 +1,99 @@
+<div style="display: flex; justify-content: flex-end; align-items: center; position: absolute; right: 0;">
+    <a mat-mini-fab color="primary" matTooltip="Agregar un nuevo repuesto" matTooltipPosition="right"
+        href="/create-repuesto">
+        <mat-icon>add</mat-icon>
+    </a>
+</div>
+<div class="container-fluid mt-3" style="width: 100%;">
+    <ul class="nav nav-tabs w-100" id="myTabs">
+        <li class="nav-item">
+            <button class="nav-link active" id="datosPrimarios-tab" data-bs-toggle="tab"
+                data-bs-target="#datosPrimarios" role="tab" aria-controls="datosPrimarios" aria-selected="true">Datos
+                primarios</button>
+        </li>
+        <li class="nav-item">
+            <button class="nav-link" id="datosDescriptivos-tab" data-bs-toggle="tab" data-bs-target="#datosDescriptivos"
+                role="tab" aria-controls="datosDescriptivos" aria-selected="false">Datos descriptivos</button>
+        </li>
+    </ul>
+    <div class="tab-content">
+        <div class="tab-pane fade show active" id="datosPrimarios" role="tabpanel" aria-labelledby="datosPrimarios-tab">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+                        <th scope="col">Código</th>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Precio</th>
+                        <th scope="col">Stock</th>
+                        <th scope="col">Categoría</th>
+                        <th scope="col">Fecha de creación</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let r of repuestos">
+                        <td>
+                            <a style="margin: -10px;" mat-icon-button color="primary" href="edit-repuesto/{{r.code}}"
+                                matTooltip="Editar el repuesto '{{r.name}}'" matTooltipPosition="right">
+                                <mat-icon>edit</mat-icon>
+                            </a>
+                        </td>
+                        <td>
+                            <button style="margin: -10px;" mat-icon-button color="warn"
+                                (click)="comprobarStock(r._id, r.stock, r.name)"
+                                matTooltip="Eliminar el repuesto '{{r.name}}'" matTooltipPosition="right">
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                        </td>
+                        <td>{{ r.code }}</td>
+                        <td>{{ r.name }}</td>
+                        <td>${{ r.price }}</td>
+                        <td>{{ r.stock }}</td>
+                        <td>{{ r.category }}</td>
+                        <td>{{ r.createdAt | date:'yyyy-MM-dd HH:mm'}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="tab-pane fade" id="datosDescriptivos" role="tabpanel" aria-labelledby="datosDescriptivos-tab">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+                        <th scope="col">Código</th>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Marca</th>
+                        <th scope="col">Modelo</th>
+                        <th scope="col">Tipo</th>
+                        <th scope="col">Año</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let r of repuestos">
+                        <td>
+                            <a style="margin: -10px;" mat-icon-button color="primary" href="edit-repuesto/{{r.code}}"
+                                matTooltip="Editar el repuesto '{{r.name}}'" matTooltipPosition="right">
+                                <mat-icon>edit</mat-icon>
+                            </a>
+                        </td>
+                        <td>
+                            <button style="margin: -10px;" mat-icon-button color="warn"
+                                (click)="comprobarStock(r._id, r.stock, r.name)"
+                                matTooltip="Eliminar el repuesto '{{r.name}}'" matTooltipPosition="right">
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                        </td>
+                        <td>{{ r.code }}</td>
+                        <td>{{ r.name }}</td>
+                        <td>{{ r.brand }}</td>
+                        <td>{{ r.brandModel }}</td>
+                        <td>{{ r.modelType }}</td>
+                        <td>{{ r.modelTypeYear }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

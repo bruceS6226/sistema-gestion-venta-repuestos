@@ -1,0 +1,22 @@
+.verificacion-pendiente {
+    padding-top: 240px;
+    padding-bottom: 75px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+}
+
+.verificacion-pendiente h1 {
+    font-size: 24px;
+}
+
+.verificacion-pendiente p {
+    font-size: 16px;
+    margin-top: 20px;
+}
+
+.verificacion-pendiente button {
+    margin-top: 20px;
+}

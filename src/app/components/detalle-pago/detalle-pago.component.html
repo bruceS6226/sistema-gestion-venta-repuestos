@@ -1,0 +1,223 @@
+<div class="return">
+    <button (click)="retornar()" mat-icon-button>
+        <mat-icon class="fw-bold">arrow_back</mat-icon>
+    </button>
+</div>
+<div class="container">
+    <div class="row row-cols-1 row-cols-lg-2 w-100">
+        <div class="col-lg-7">
+            <div class="titulo gap-1 w-100">
+                <i class="bi bi-person-lines-fill"></i>
+                <span class="m-0">Detalles del cliente</span><br>
+            </div>
+            <form class="w-100" (ngSubmit)="guardarDetalleUsuario(detalleUsuarioForm, btnGuardar)"
+                #detalleUsuarioForm="ngForm">
+                <div class="row row-cols-1 row-cols-sm-2">
+                    <div class="col">
+                        <div class="form-floating mb-2 mt-3">
+                            <input type="text" id="firstName" [(ngModel)]="detallesUsuario.firstName" name="firstName"
+                                required placeholder="Nombre" #firstNameInput="ngModel" class="form-control"
+                                id="firstName">
+                            <label for="firstName"
+                                [style.color]="(detallesUsuario.firstName ? 'rgb(110, 110, 110)' : 'rgb(150, 150, 150)')">
+                                <span class="text-danger">*</span>Nombre:</label>
+                            <small class="form-text text-danger"
+                                [style.display]="(firstNameInput.invalid && firstNameInput.touched) ? 'block' : 'none'">
+                                Debe llenar este campo obligatorio
+                            </small>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="form-floating mb-2 mt-3">
+                            <input type="text" [(ngModel)]="detallesUsuario.lastName" name="lastName" required
+                                placeholder="Apellido" #lastNameInput="ngModel" class="form-control" id="lastName">
+                            <label for="lastName"
+                                [style.color]="(detallesUsuario.lastName ? 'rgb(110, 110, 110)' : 'rgb(150, 150, 150)')">
+                                <span class="text-danger">*</span>Apellido:</label>
+                            <small class="form-text text-danger"
+                                [style.display]="(lastNameInput.invalid && lastNameInput.touched) ? 'block' : 'none'">
+                                Debe llenar este campo obligatorio
+                            </small>
+                        </div>
+                    </div>
+                </div>
+                <div class="row row-cols-1 row-cols-sm-2">
+                    <div class="col">
+                        <div class="mb-2 mt-2">
+                            <select class="form-select p-3" [(ngModel)]="detallesUsuario.identityDocumentType"
+                                name="identityDocumentType" required #documentTypeInput="ngModel"
+                                id="identityDocumentType"
+                                [ngStyle]="{'color': (identityDocumentType.value ? 'black' : 'rgb(150, 150, 150)')}"
+                                #identityDocumentType>
+                                <option style="color: rgb(150, 150, 150);" value="" selected>Seleccione el tipo de
+                                    documento</option>
+                                <option style="color: black" value="CEDULA">Cédula</option>
+                                <option style="color: black" value="RUC">RUC</option>
+                                <option style="color: black" value="PASAPORTE">Pasaporte</option>
+                            </select>
+                            <small class="form-text text-danger"
+                                [style.display]="(documentTypeInput.invalid && documentTypeInput.touched) ? 'block' : 'none'">
+                                Debe seleccionar un tipo de documento
+                            </small>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-floating mb-2 mt-2">
+                            <input type="text" [(ngModel)]="detallesUsuario.identityDocumentNumber"
+                                name="identityDocumentNumber" required placeholder="Número de documento"
+                                #documentNumberInput="ngModel" class="form-control" id="identityDocumentNumber"
+                                pattern="^\d+$">
+                            <label for="identityDocumentNumber"
+                                [style.color]="(detallesUsuario.identityDocumentNumber ? 'rgb(110, 110, 110)' : 'rgb(150, 150, 150)')">
+                                <span class="text-danger">*</span>Número de documento:</label>
+                            <small class="form-text text-danger"
+                                [style.display]="(documentNumberInput.invalid && documentNumberInput.touched) ? 'block' : 'none'">
+                                Ingrese un número de documento válido
+                            </small>
+                        </div>
+                    </div>
+                </div>
+                <div class="row row-cols-1 row-cols-sm-2">
+                    <div class="col">
+                        <div class="form-floating mb-2 mt-2">
+                            <input type="text" [(ngModel)]="detallesUsuario.postalCode" name="postalCode" required
+                                placeholder="Código Postal" #postalCodeInput="ngModel" class="form-control"
+                                id="postalCode" pattern="^\d{6}$">
+                            <label for="postalCode"
+                                [style.color]="(detallesUsuario.postalCode ? 'rgb(110, 110, 110)' : 'rgb(150, 150, 150)')">
+                                <span class="text-danger">*</span>Código Postal:</label>
+                            <small class="form-text text-danger"
+                                [style.display]="(postalCodeInput.invalid && postalCodeInput.touched) ? 'block' : 'none'">
+                                Debe llenar este campo obligatorio
+                            </small>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="form-floating mb-2 mt-2">
+                            <input type="text" [(ngModel)]="detallesUsuario.phone" name="phone" required
+                                placeholder="Teléfono" #phoneInput="ngModel" class="form-control" id="phone"
+                                pattern="^\d{10}$">
+                            <label for="phone"
+                                [style.color]="(detallesUsuario.phone ? 'rgb(110, 110, 110)' : 'rgb(150, 150, 150)')">
+                                <span class="text-danger">*</span>Teléfono:</label>
+                            <small class="form-text text-danger"
+                                [style.display]="(phoneInput.invalid && phoneInput.touched) ? 'block' : 'none'">
+                                Ingrese un número de teléfono válido (10 dígitos)
+                            </small>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-floating mb-2 mt-2">
+                    <input type="text" [(ngModel)]="detallesUsuario.address" name="address" required
+                        placeholder="Dirección" #addressInput="ngModel" class="form-control" id="address">
+                    <label for="address"
+                        [style.color]="(detallesUsuario.address ? 'rgb(110, 110, 110)' : 'rgb(150, 150, 150)')">
+                        <span class="text-danger">*</span>Dirección:</label>
+                    <small class="form-text text-danger"
+                        [style.display]="(addressInput.invalid && addressInput.touched) ? 'block' : 'none'">
+                        Debe llenar este campo obligatorio
+                    </small>
+                </div>
+                <div class="row row-cols-1 row-cols-sm-2">
+                    <div class="col">
+                        <div class="mb-2 mt-2">
+                            <select class="form-select p-3" [(ngModel)]="detallesUsuario.province" name="province"
+                                required (change)="onProvinceChange($event)" #provinceInput="ngModel" id="province"
+                                [ngStyle]="{'color': (province.value ? 'black' : 'rgb(150, 150, 150)')}" #province>
+                                <option style="color: rgb(150, 150, 150);" value="" selected>Seleccione la provincia
+                                </option>
+                                <option class="text-dark" *ngFor="let prov of provincias" [value]="prov">{{ prov }}
+                                </option>
+                            </select>
+                            <small class="form-text text-danger"
+                                [style.display]="(provinceInput.invalid && provinceInput.touched) ? 'block' : 'none'">
+                                Debe seleccionar una provincia
+                            </small>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="mb-2 mt-2">
+                            <select class="form-select p-3" [(ngModel)]="detallesUsuario.city" name="city" required
+                                #cityInput="ngModel" id="city"
+                                [ngStyle]="{'color': (city.value ? 'black' : 'rgb(150, 150, 150)')}" #city>
+                                <option style="color: rgb(150, 150, 150);" value="" selected>Seleccione la ciudad
+                                </option>
+                                <option class="text-dark" *ngFor="let city of ciudades" [value]="city">{{ city }}
+                                </option>
+                            </select>
+                            <small class="form-text text-danger"
+                                [style.display]="(cityInput.invalid && cityInput.touched) ? 'block' : 'none'">
+                                Debe seleccionar una ciudad
+                            </small>
+                        </div>
+                    </div>
+                </div><br>
+                <button class="w-100" type="button" mat-raised-button color="primary"
+                    (click)="btnGuardar.disabled = true; guardarDetalleUsuario(detalleUsuarioForm, btnGuardar)"
+                    #btnGuardar>
+                    <ng-container *ngIf="!btnGuardar.disabled; else loadingTemplate">
+                        <i class="bi bi-person-vcard-fill"></i> Guardar información
+                    </ng-container>
+                    <ng-template #loadingTemplate>
+                        <mat-progress-spinner #spinner [diameter]="24" mode="indeterminate"></mat-progress-spinner>
+                    </ng-template></button>
+            </form>
+        </div>
+        <div class="col-lg-5">
+            <div class="titulo gap-1 w-100">
+                <mat-icon>receipt_long</mat-icon>
+                <span class="m-0">Detalles del pedido</span><br>
+            </div><br>
+            <table id="cotizacion" class="table table-bordered mb-4 align-content-center">
+                <thead>
+                    <tr>
+                        <th scope="col" class="text-left">NOMBRE</th>
+                        <th scope="col" class="text-left">CANTIDAD</th>
+                        <th scope="col" class="text-right">SUBTOTAL</th>
+                        <th scope="col" class="text-right">TOTAL</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <ng-container *ngFor="let repuesto of repuestosSeleccionadosParaCompra">
+                        <tr>
+                            <td class="font-light text-left">{{repuesto.name}}</td>
+                            <td class="font-light text-center">
+                                {{repuestoCantidades.get(repuesto.code!)}}
+                            </td>
+                            <td class="font-light text-right">${{repuesto.price ? (repuesto.price *
+                                (repuestoCantidades.get(repuesto.code!) ?? 1)).toFixed(2) : ''}}</td>
+                            <td class="font-light text-right">${{repuesto.price ? (repuesto.price *
+                                (repuestoCantidades.get(repuesto.code!) ?? 1)*1.15).toFixed(2) : ''}}</td>
+                        </tr>
+                    </ng-container>
+                    <tr class="border-0">
+                        <td class="border-0" colspan="2"></td>
+                        <td class="border">SUBTOTAL</td>
+                        <td class="border">${{calcularSubTotal()}}</td>
+                    </tr>
+                    <tr class="border-0">
+                        <td class="border-0" colspan="2"></td>
+                        <td class="border">IVA 15%</td>
+                        <td class="border">${{calcularIVA(1.15)}}</td>
+                    </tr>
+                    <tr class="border-0">
+                        <td class="border-0" colspan="2"></td>
+                        <td class="border"><b>TOTAL</b></td>
+                        <td class="border"><b>${{calcularTotal()}}</b></td>
+                    </tr>
+                </tbody>
+            </table>
+            <button class="w-100 text-light" type="button" (click)="realizarPago(detalleUsuarioForm, btnPagar)"
+                mat-raised-button style="background-color: #6B8E23;" #btnPagar>
+                <ng-container *ngIf="!btnPagar.disabled; else loadingTemplate">
+                    <mat-icon>paid</mat-icon> Realizar el pago
+                </ng-container>
+                <ng-template #loadingTemplate>
+                    <mat-progress-spinner #spinner [diameter]="24" mode="indeterminate"></mat-progress-spinner>
+                </ng-template></button>
+        </div>
+    </div>
+
+</div>

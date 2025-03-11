@@ -1,0 +1,6 @@
+.reCAPTCHA {
+    transform:scale(0.805);
+    -webkit-transform:scale(0.805);
+    transform-origin:0 0;
+    -webkit-transform-origin:0 0;
+}

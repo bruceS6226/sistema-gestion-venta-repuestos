@@ -1,0 +1,12 @@
+.container {
+    text-align: start;
+    max-width: 1150px !important;
+}
+.titulo {
+    top: 77px;
+}
+
+.categorias {
+    position: sticky;
+    top: 78px;
+}
