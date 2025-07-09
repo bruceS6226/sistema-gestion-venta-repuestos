@@ -4,7 +4,7 @@ import { NgxCaptchaModule } from 'ngx-captcha';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { CreateRepuestoComponent } from './components/create-repuesto/create-repuesto.component';
+import { CreateRepuestoComponent } from './components/repuestos/create-repuesto/create-repuesto.component';
 import { HeaderComponent } from './components/header/header.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
@@ -52,6 +52,12 @@ import { CreateCategoriaComponent } from './components/categorias/create-categor
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {MatTreeModule} from '@angular/material/tree';
 import { CreateMarcaComponent } from './components/marcas/create-marca/create-marca.component';
+import { AccesoDenegadoComponent } from './components/acceso-denegado/acceso-denegado.component';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import {MatStepperModule} from '@angular/material/stepper';
+import { DialogoAgregarModeloComponent } from './components/marcas/dialogo-agregar-modelo/dialogo-agregar-modelo.component';
+import { DialogoAgregarTipoComponent } from './components/marcas/dialogo-agregar-tipo/dialogo-agregar-tipo.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -78,6 +84,9 @@ import { CreateMarcaComponent } from './components/marcas/create-marca/create-ma
     MarcasComponent,
     CreateCategoriaComponent,
     CreateMarcaComponent,
+    AccesoDenegadoComponent,
+    DialogoAgregarModeloComponent,
+    DialogoAgregarTipoComponent,
   ],
   imports: [
     HttpClientModule,
@@ -105,6 +114,9 @@ import { CreateMarcaComponent } from './components/marcas/create-marca/create-ma
     MatChipsModule,
     MatSlideToggleModule,
     MatTreeModule,
+    MatSnackBarModule,
+    MatStepperModule,
+    ReactiveFormsModule,
     
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

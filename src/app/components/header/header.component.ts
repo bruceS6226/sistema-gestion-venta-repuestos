@@ -1,170 +1,185 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ErrorService } from 'src/app/services/error.service';
 import { ExitoService } from 'src/app/services/exito.service';
 import * as jwt from 'jwt-decode';
 import { Usuario } from 'src/app/models/usuario';
 import { ActualizarComponentService } from 'src/app/services/actualizar.component.service';
-import { Store } from '@ngrx/store';
-import { selectEmail, selectRoles, selectToken } from 'src/app/store/login.selectors.selectors';
-import { logout } from 'src/app/store/login.actions.action';
 import { Repuesto } from 'src/app/models/repuesto';
-import { MatAutocompleteSelectedEvent, MatAutocompleteTrigger } from '@angular/material/autocomplete';
+import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { RepuestoService } from 'src/app/services/repuesto.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { FormBuilder, FormGroup } from '@angular/forms';
+
 interface RepuestoFilters {
   search?: string;
 }
+
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit {
   public token: string | null = '';
-  public email: string = '';
-  public roles: string[] = [];
   public usuario: Usuario;
   public textoBuscar: string = '';
-  public repuestos: Repuesto[] = [];
   public repuestosFitradosNombre: Repuesto[] = [];
-  public categorias: any[] = [];
-  public repuestosSeleccionadosParaCompra: Repuesto[] = []
+  public repuestosSeleccionadosParaCompra: Repuesto[] = [];
   public cantidadRepuestosSeleccionadosParaComprar: number = 0;
+  public isAuthenticated: boolean = false;
+  searchForm: FormGroup;
+  mostrarBuscador = false;
 
-  constructor(private _errorService: ErrorService, private _exitoService: ExitoService, private router: Router,
-    private _actualizarComponentService: ActualizarComponentService, private store: Store, private _repuestoService: RepuestoService) {
-    this.usuario = new Usuario({ userName: '', roles: [''] });
-    this._actualizarComponentService.actualizarHeader$.subscribe({
-      next: () => {
-        this.usuario = new Usuario({ userName: '', roles: [''] });
-        this.ngOnInit()
-      },
-    })
+  private _cantidadRepuestosSubject = new BehaviorSubject<number>(0);
+  public cantidadRepuestosSeleccionadosParaComprar$: Observable<number> = this._cantidadRepuestosSubject.asObservable();
+
+  constructor(
+    private fb: FormBuilder,
+    private _errorService: ErrorService,
+    private _exitoService: ExitoService,
+    private router: Router,
+    private _actualizarComponentService: ActualizarComponentService,
+    private _repuestoService: RepuestoService
+  ) {
+    this.usuario = { userName: '', roles: [] };
+    this.searchForm = this.fb.group({
+      searchText: ['']
+    });
+    this._actualizarComponentService.actualizarHeader$.subscribe(() => {
+      this.obtenerInformacionToken();
+      this.loadCarritoFromLocalStorage();
+    });
   }
 
   ngOnInit() {
     this.obtenerInformacionToken();
-    this.obtenerTodosRepuestos();
-    this.obtenerRepuestosSeleccionadosParaComprar();
+    this.loadCarritoFromLocalStorage();
   }
-  obtenerRepuestosSeleccionadosParaComprar() {
+
+  private loadCarritoFromLocalStorage(): void {
     const repuestosJson = localStorage.getItem('repuestosSeleccionadosParaCompra');
     if (repuestosJson) {
       try {
-        this.repuestosSeleccionadosParaCompra = JSON.parse(repuestosJson)
-        this.cantidadRepuestosSeleccionadosParaComprar = this.repuestosSeleccionadosParaCompra.length
+        this.repuestosSeleccionadosParaCompra = JSON.parse(repuestosJson);
+        this.cantidadRepuestosSeleccionadosParaComprar = this.repuestosSeleccionadosParaCompra.length;
+        this._cantidadRepuestosSubject.next(this.cantidadRepuestosSeleccionadosParaComprar);
       } catch (error) {
         console.error('Error al analizar los datos del localStorage:', error);
+        this.repuestosSeleccionadosParaCompra = [];
+        this.cantidadRepuestosSeleccionadosParaComprar = 0;
+        this._cantidadRepuestosSubject.next(0);
       }
     } else {
       this.repuestosSeleccionadosParaCompra = [];
-      this.cantidadRepuestosSeleccionadosParaComprar = this.repuestosSeleccionadosParaCompra.length
+      this.cantidadRepuestosSeleccionadosParaComprar = 0;
+      this._cantidadRepuestosSubject.next(0);
     }
   }
-  obtenerInformacionToken() {
+
+  obtenerInformacionToken(): void {
     this.token = localStorage.getItem('token');
     if (this.token) {
       this.usuario = jwt.jwtDecode(this.token!) as Usuario;
+      this.isAuthenticated = true;
+    } else {
+      this.usuario = { userName: '', roles: [] };
+      this.isAuthenticated = false;
     }
   }
-  cerrarSesion() {
+
+  cerrarSesion(): void {
     localStorage.removeItem('token');
     localStorage.removeItem('repuestoCantidades');
     localStorage.removeItem('repuestosSeleccionadosParaCompra');
-    this.router.navigateByUrl('/acceso')
+    this.router.navigateByUrl('/acceso');
     this._exitoService.mostrarExito('SESIÓN CERRADA, esperamos tenerte de nuevo aquí, nos vemos pronto');
     this._actualizarComponentService.notificarHeader();
-    //this.store.dispatch(logout());
   }
 
-  obtenerTodosRepuestos() {
-    this._repuestoService.obtenerRepuestos().subscribe({
-      next: (value) => {
-        this.repuestos = value.results;
-        this.repuestos.forEach(repuesto => this.nombresMap.set(repuesto.name!, repuesto));
-      },
-      error: (e: HttpErrorResponse) => {
-        this._errorService.msjError(e);
-      }
-    })
-  }
   private timer: any;
-  onInputChange() {
+  onInputChange(): void {
     if (this.timer) {
       clearTimeout(this.timer);
     }
     this.timer = setTimeout(() => {
-      if (this.textoBuscar) {
+      if (this.textoBuscar && this.textoBuscar.length > 2) {
         this.filterRepuestos(this.textoBuscar);
       } else {
-        this.repuestos = [];
         this.repuestosFitradosNombre = [];
       }
     }, 400);
   }
-  onOptionSelected(event: MatAutocompleteSelectedEvent) {
-    const repuesto = this.repuestosFitradosNombre.find(r => r.name === event.option.value);
+
+  onOptionSelected(event: MatAutocompleteSelectedEvent): void {
+    const selectedRepuestoName = event.option.value;
+    const repuesto = this.repuestosFitradosNombre.find(r => r.name === selectedRepuestoName);
     if (repuesto) {
-      window.location.href = `/repuesto/${repuesto.code}`;
+      this.router.navigate(['/repuesto', repuesto.code]);
+      this.textoBuscar = '';
     }
   }
-  public nombresMap = new Map<string, Repuesto>();
-  filterRepuestos(value: string) {
-    this.repuestos.forEach(repuesto => this.nombresMap.set(repuesto.name!, repuesto));
-    const filters: RepuestoFilters = {};
-    filters['search'] = this.textoBuscar;
-    this._repuestoService.buscarRepuestos(filters).subscribe({
-      next: (value) => {
-        this.repuestosFitradosNombre = value.results;
-        if (this.repuestosFitradosNombre.length === 0) {
-          this._repuestoService.obtenerRepuesto(this.textoBuscar).subscribe({
-            next: (value) => {
-              if (value) {
-                this.repuestosFitradosNombre[0] = value;
-              }
+
+filterRepuestos(value: string): void {
+  const filters: RepuestoFilters = { search: value };
+  this._repuestoService.buscarRepuestos(filters).subscribe({
+    next: (res) => {
+      this.repuestosFitradosNombre = res.results;
+
+      // 👇 Agrega esto
+      if (this.repuestosFitradosNombre.length === 0) {
+        this._repuestoService.obtenerRepuesto(value).subscribe({
+          next: (repuesto) => {
+            if (repuesto) {
+              this.repuestosFitradosNombre = [repuesto];
             }
-          });
-        }
-      },
-    })
-  }
+          },
+          error: (e: HttpErrorResponse) => {
+            // puedes manejar error si quieres
+          }
+        });
+      }
+    },
+    error: (e: HttpErrorResponse) => {
+      this._errorService.msjError(e);
+      this.repuestosFitradosNombre = [];
+    }
+  });
+}
 
-  @ViewChild('input', { read: MatAutocompleteTrigger }) autoTrigger!: MatAutocompleteTrigger;
-  buscar(textoBuscar: string) {
-    //this.autoTrigger.closePanel();
-    //this.router.navigateByUrl(`/search?s=${textoBuscar}`)
-    window.location.href = `/spare-part?search=${this.textoBuscar}`;
-  }
 
+  buscar(textoBuscar: string): void {
+    if (textoBuscar) {
+      this.router.navigate(['/spare-part'], { queryParams: { search: textoBuscar } });
+      this.textoBuscar = '';
+    } else {
+      this.router.navigate(['/spare-part']);
+    }
+  }
 
   calcularTotal(): number {
-    let total = 0.0;
-    for (const repuesto of this.repuestosSeleccionadosParaCompra) {
-      total += Number(repuesto.price);
-    }
-    return total;
+    return this.repuestosSeleccionadosParaCompra.reduce((sum, repuesto) => sum + (repuesto.price || 0), 0);
   }
-  borrarRepuestosSeleccionadosParaCompra() {
+
+  borrarRepuestosSeleccionadosParaCompra(): void {
     localStorage.removeItem('repuestosSeleccionadosParaCompra');
-    this.ngOnInit()
+    this.loadCarritoFromLocalStorage();
     this._actualizarComponentService.notificarDetalleCarrito();
   }
 
-  eliminarDelCarrito(repuesto: Repuesto) {
-    let repuestosSeleccionadosParaCompra = [];
+  eliminarDelCarrito(repuesto: Repuesto): void {
     const repuestosJson = localStorage.getItem('repuestosSeleccionadosParaCompra');
     if (repuestosJson) {
-      repuestosSeleccionadosParaCompra = JSON.parse(repuestosJson);
-      const index = repuestosSeleccionadosParaCompra.findIndex((item: Repuesto) => item.code === repuesto.code);
+      let repuestosSeleccionadosParaCompraParsed: Repuesto[] = JSON.parse(repuestosJson);
+      const index = repuestosSeleccionadosParaCompraParsed.findIndex(item => item.code === repuesto.code);
       if (index !== -1) {
-        repuestosSeleccionadosParaCompra.splice(index, 1);
-        localStorage.setItem('repuestosSeleccionadosParaCompra', JSON.stringify(repuestosSeleccionadosParaCompra));
-        this.ngOnInit();
+        repuestosSeleccionadosParaCompraParsed.splice(index, 1);
+        localStorage.setItem('repuestosSeleccionadosParaCompra', JSON.stringify(repuestosSeleccionadosParaCompraParsed));
+        this.loadCarritoFromLocalStorage();
         this._actualizarComponentService.notificarDetalleCarrito();
       }
     }
   }
-
 
 }

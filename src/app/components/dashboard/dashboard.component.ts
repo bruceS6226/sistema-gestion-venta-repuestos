@@ -1,58 +1,71 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { UsuarioService } from 'src/app/services/usuario.service';
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })
-export class DashboardComponent implements  OnInit {
+export class DashboardComponent implements OnInit {
   selectedTabIndex: number = 0;
+  isEmploy: boolean = false;
+  tabs: string[] = ['repuestos', 'usuarios', 'categorias', 'marcas'];
 
-  constructor(private route: ActivatedRoute, private router: Router) {}
+  constructor(private route: ActivatedRoute, private router: Router, private _usuarioService: UsuarioService) {}
 
   ngOnInit(): void {
-    // Escuchar el fragmento de la URL (el hash)
+    this.obtenerRolesUsuario();
+    
     this.route.fragment.subscribe((fragment) => {
       if (fragment) {
         this.setTabByFragment(fragment);
       }
     });
   }
+
+  async obtenerRolesUsuario(): Promise<void> {
+    try {
+      const token = localStorage.getItem('token');
+      if (token) {
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        const userRoles: string[] = payload.roles || [];
+        this.isEmploy = userRoles.includes('employee');
+      }
+    } catch (error) {
+      console.error('Error al obtener roles:', error);
+    }
+
+    if (this.isEmploy) {
+      this.tabs = this.tabs.filter(tab => tab !== 'usuarios');
+    }
+
+    const token = localStorage.getItem('token');
+    if (!token || token === 'undefined') {
+      this.tabs = this.tabs.filter(tab => tab !== 'usuarios');
+      this.selectedTabIndex = 0;
+    }
+  }
+
   setTabByFragment(fragment: string): void {
     switch (fragment) {
       case 'usuarios':
-        this.selectedTabIndex = 1;
+        this.selectedTabIndex = this.tabs.indexOf('usuarios');
         break;
       case 'categorias':
-        this.selectedTabIndex = 2;
+        this.selectedTabIndex = this.tabs.indexOf('categorias');
         break;
       case 'marcas':
-        this.selectedTabIndex = 3;
+        this.selectedTabIndex = this.tabs.indexOf('marcas');
         break;
       default:
-        this.selectedTabIndex = 0;
+        this.selectedTabIndex = this.tabs.indexOf('repuestos');
         break;
     }
   }
 
   changeFragment(index: number): void {
-    let fragment = '';
-    switch (index) {
-      case 1:
-        fragment = 'usuarios';
-        break;
-      case 2:
-        fragment = 'categorias';
-        break;
-      case 3:
-        fragment = 'marcas';
-        break;
-      default:
-        fragment = 'repuestos';
-        break;
-    }
-
+    let fragment = this.tabs[index] || 'repuestos';
     this.router.navigate([], { fragment });
   }
 }

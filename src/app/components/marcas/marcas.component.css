@@ -1,0 +1,83 @@
+.legend {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap; /* Hace que los elementos bajen en pantallas pequeñas */
+  gap: 1.5rem;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.legend-dot {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  margin-right: 6px;
+  border-radius: 50%;
+}
+
+.legend-dot.marca {
+  background-color: #faf0db;
+}
+.legend-dot.modelo {
+  background-color: #c9e6ff;
+}
+.legend-dot.tipo {
+  background-color: #d7ffd7;
+}
+
+.tree-container {
+  max-width: 650px;
+  background-color: white !important;
+  margin: auto;
+  padding: 8px;
+  width: 100%;
+}
+
+.tree-node {
+  width: 100%;
+  padding: 8px 12px;
+  margin-bottom: 6px;
+  border-radius: 6px;
+  box-sizing: border-box;
+}
+
+.marca-node {
+  background-color: #fffaf0;
+}
+.modelo-node {
+  background-color: #e5f3ff;
+}
+.tipo-node {
+  background-color: #e9ffe9;
+}
+
+.action-buttons {
+  display: flex;
+  flex-wrap: wrap; /* Permite que los botones se acomoden en varias líneas */
+  gap: 6px;
+  justify-content: flex-end;
+}
+
+/* Asegura que cada botón tenga espacio en móviles */
+.action-buttons button,
+.action-buttons a {
+  flex: 0 1 auto;
+}
+
+
+.mat-tree-node:hover,
+.mat-button:hover,
+.mat-icon-button:hover {
+  background-color: transparent !important;
+}
+
+button.mat-icon-button {
+  padding: 4px;
+}
+
+@media (max-width: 768px) {
+  .action-buttons {
+    display: none !important;
+  }
+}

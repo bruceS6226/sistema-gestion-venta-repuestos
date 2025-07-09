@@ -1,0 +1,51 @@
+mat-slide-toggle {
+    transform: scale(1.1);
+}
+
+.container-fluid{
+    background-color: #f1f3f696;
+}
+
+.new-input {
+    background-color: transparent;
+    padding: 16px;
+    width: 100%;
+    border: none;
+    outline: none;
+    box-shadow: none;
+    transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out;
+}
+
+.new-input:hover {
+    background-color: #ECECEC;
+}
+
+.new-input:focus {
+    background-color: #ECECEC;
+    border: 0;
+    outline: none;
+}
+
+/* Nuevas clases para estilos de tabla */
+.column-name {
+    min-width: 300px;
+}
+
+.column-actions {
+    min-width: 120px;
+}
+
+.action-buttons-cell {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Si quieres controlar el color del encabezado de la tabla, y no viene de un tema global,
+   podrías añadirlo aquí. Ejemplo: */
+/*
+.table-header-row {
+    background-color: #f0f0f0; 
+    color: #333;
+}
+*/

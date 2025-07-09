@@ -3,76 +3,105 @@
         <mat-icon class="fw-bold">arrow_back</mat-icon>
     </button>
 </div>
-<div class="container">
-    <div class="row row-cols-2 row-cols-lg-3 d-flex justify-content-center align-items-center py-3">
-        <div class="col-lg-1">
-            <ng-container *ngFor="let foto of repuesto.images; let i = index">
-                <div class="card cardSecundaria" (click)="seleccionarFotoSecundaria(foto)">
-                    <img class="imagenSecundaria" src="{{repuesto.images?.[i]}}" alt="">
+
+<div class="container-fluid product-detail-container mt-4 mb-5">
+    <ng-container *ngIf="repuesto; else loadingOrError">
+        <div class="row g-4">
+            <div class="col-lg-7 d-flex flex-column flex-lg-row align-items-start">
+                <div class="thumbnail-gallery order-2 order-lg-1 d-flex flex-lg-column me-lg-4 mb-4 mb-lg-0">
+                    <ng-container *ngFor="let foto of repuesto.images; let i = index">
+                        <div class="thumbnail-card" [class.active-thumbnail]="foto === fotoAmpliada"
+                            (click)="seleccionarFotoSecundaria(foto)">
+                            <img class="thumbnail-image" [src]="foto || 'assets/placeholder.jpg'"
+                                [alt]="'Miniatura ' + (i + 1)">
+                        </div>
+                    </ng-container>
                 </div>
-            </ng-container>
-        </div>
-        <div class="col-lg-6">
-            <div class="card text-center">
-                <div class="imagenPrincipalContainer">
-                    <lib-ngx-image-zoom class="imagenRepuesto" [thumbImage]="fotoAmpliada" [fullImage]="fotoAmpliada"
-                        [magnification]="1.1" [enableScrollZoom]="true" [enableLens]="true" [lensWidth]="200"
-                        [lensHeight]="200" [circularLens]="true">
-                    </lib-ngx-image-zoom>
+                <div class="main-image-container order-1 order-lg-2 flex-grow-1">
+                    <div class="main-image-card">
+                        <lib-ngx-image-zoom class="image-zoom-area"
+                            [thumbImage]="fotoAmpliada || 'assets/placeholder.jpg'"
+                            [fullImage]="fotoAmpliada || 'assets/placeholder.jpg'" [magnification]="1.1"
+                            [enableScrollZoom]="true" [enableLens]="true" [lensWidth]="200" [lensHeight]="200"
+                            [circularLens]="true">
+                        </lib-ngx-image-zoom>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-5 product-info-column">
+                <div class="product-details-card p-4">
+                    <h1 class="product-name-detail mb-2">{{repuesto.name}}</h1>
+                    <p class="product-code-detail mb-0">CÓDIGO: <span class="fw-bold">{{repuesto.code}}</span></p>
+
+                    <div class="price-stock-section mb-0">
+                        <h2 class="product-price-detail mb-2">Precio: <span class="fw-bold">${{repuesto.price |
+                                number:'1.2-2'}}</span> (incluye IVA)</h2>
+                        <h3 class="product-stock-status fw-bold mb-0"
+                            [ngClass]="{'text-success': repuesto.stock! > 0, 'text-danger': repuesto.stock! <= 0}">
+                            <ng-container *ngIf="repuesto.stock !== null && repuesto.stock !== undefined">
+                                {{ repuesto.stock > 0 ? repuesto.stock + ' DISPONIBLE/S' : 'NO DISPONIBLE' }}
+                            </ng-container>
+                            <ng-container *ngIf="repuesto.stock === null || repuesto.stock === undefined">
+                                NO DISPONIBLE
+                            </ng-container>
+                        </h3>
+                    </div>
+
+                    <div class="product-attributes-section mb-2">
+                        <p class="attribute-label mb-1">
+                            Categoría:
+                            <a [routerLink]="['/spare-part']" [queryParams]="{ category: repuesto.category }"
+                                class="attribute-link">{{repuesto.category}}</a>
+                        </p>
+                        <p class="attribute-label">
+                            Marca VHC:
+                            <a [routerLink]="['/spare-part']" [queryParams]="{ brand: repuesto.brand }"
+                                class="attribute-link">{{repuesto.brand}}</a>
+                        </p>
+                        <p class="attribute-label mb-1"> Modelo: <span class="attribute-value">{{repuesto.brandModel}}</span></p>
+                        <p class="attribute-label mb-1"> Tipo: <span class="attribute-value">{{repuesto.modelType}}</span></p>
+                        <p class="attribute-label mb-1"> Año: <span class="attribute-value">{{repuesto.modelTypeYear}}</span></p>
+                    </div>
+
+<div class="add-to-cart-wrapper">
+                        <button class="btn add-to-cart-btn-detail w-100 mt-3" type="button" mat-raised-button
+                            [color]="!isAdded ? 'primary' : 'link'"
+                            (click)="agregarAlCarrito(repuesto)"
+                            [disabled]="(repuesto.stock === undefined || repuesto.stock <= 0) || isAddingToCart">
+                            <span *ngIf="!isAdded && !isAddingToCart">
+                                <i class="bi bi-cart-plus-fill me-2"></i> Agregar al carrito
+                            </span>
+                            <span *ngIf="isAddingToCart">
+                                <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                                Agregando...
+                            </span>
+                            <span *ngIf="isAdded">
+                                <i class="bi bi-cart-check-fill me-2"></i> Añadido!
+                            </span>
+                        </button>
+                        <a *ngIf="isAdded" href="/cart-detail" class="view-cart-btn-link">
+                            <button mat-raised-button class="w-100 view-cart-btn" color="primary">
+                                <mat-icon>shopping_cart_checkout</mat-icon> Ver más detalles
+                            </button>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="col-lg-5">
-            <div class="text-start">
-                <h1 class="card-text fw-bold">{{repuesto.name}}</h1>
-                <h2 class="card-text">Código del repuesto: {{repuesto.code}}</h2>
-                <h2 class="card-text">Categoría: {{repuesto.category}}</h2>
-            </div>
-            <br>
-            <h3 class="card-text">
-                <div class="marca-vhc">
-                    <a href="/spare-part?brand={{repuesto.brand}}">Marca: {{repuesto.brand}}</a>
-                </div>
-                <div class="marca-vhc">
-                    <a href="/spare-part?brandModel={{repuesto.brandModel}}">Modelo: {{repuesto.brandModel}}</a>
-                </div>
-                <div class="marca-vhc">
-                    <a href="/spare-part?modelType={{repuesto.modelType}}">Tipo: {{repuesto.modelType}}</a>
-                </div>
-                <div class="marca-vhc">
-                    <a href="/spare-part?modelTypeYear={{repuesto.modelTypeYear}}">Año: {{repuesto.modelTypeYear}}</a>
-                </div>
-            </h3>
-            <h3 class="card-text">Precio: ${{repuesto.price}} (incluye IVA)</h3>
-            <br>
-            <h3 class="card-text fw-bold">
-                <span [ngStyle]="{'color': repuesto.stock > 0 ? 'green' : 'red'}"
-                    *ngIf="repuesto && repuesto.stock !== null && repuesto.stock !== undefined">
-                    {{ repuesto.stock > 0 ? repuesto.stock + ' DISPONIBLE/S' : 'NO DISPONIBLE' }}
-                </span>
-            </h3>
-            <h2 class="font-weight-bold" class="text-danger"
-                *ngIf="!repuesto || repuesto.stock === null || repuesto.stock === undefined">
-                NO DISPONIBLE
-            </h2>
-            <br>
-            
-            <button class="w-100" type="button" mat-raised-button
-            [color]="!isAdded ? 'primary' : 'link'"
-            (click)="agregarAlCarrito(repuesto)">
-            <div *ngIf="!isAdded">
-                <i class="bi bi-cart-plus-fill"></i> Agregar al carrito
-            </div>
-            <div>
-                <i style="font-size: 23px;" *ngIf="isAdded"
-                    class="bi bi-cart-check-fill text-success"></i>
-            </div>
-        </button>
+
+        <div class="product-description-section p-4 mt-4">
+            <h2 class="description-title mb-3">Detalle del producto</h2>
+            <p class="description-text">{{repuesto.description}}</p>
         </div>
-    </div>
-    <br>
-    <div class="text-start w-100">
-        <h1 class="card-text text-start"><b>Detalle del producto</b></h1>
-        <h3 class="card-text">{{repuesto.description}}</h3>
-    </div>
+    </ng-container>
+
+    <ng-template #loadingOrError>
+        <div class="spinner-container">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Cargando repuesto...</span>
+            </div>
+            <p class="ms-3 text-muted">Cargando detalles del repuesto...</p>
+        </div>
+    </ng-template>
 </div>

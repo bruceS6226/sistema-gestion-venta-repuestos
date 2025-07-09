@@ -17,7 +17,7 @@ export class Marca {
 export class Modelo {
     public _id?: string;
     public name?: string;
-    public brandName?: string;
+    public brandId?: string;
 
     constructor(config: {
         _id?: string,
@@ -26,14 +26,14 @@ export class Modelo {
     }) {
         this._id = config._id;
         this.name = config.name;
-        this.brandName = config.brandName;
+        this.brandId = config.brandName;
     }
 }
 
 export class Tipo {
     public _id?: string;
     public name?: string;
-    public modelName?: string;
+    public modelId?: string;
 
     constructor(config: {
         _id?: string,
@@ -42,6 +42,6 @@ export class Tipo {
     }) {
         this._id = config._id;
         this.name = config.name;
-        this.modelName = config.modelName;
+        this.modelId = config.modelName;
     }
 }

@@ -1,71 +1,106 @@
-<div class="return">
-    <button (click)="retornar()" mat-icon-button matTooltip="Regresar atrás">
-        <mat-icon class="fw-bold">arrow_back</mat-icon>
-    </button>
-</div>
 <div class="container">
-    <ng-container *ngIf="repuestosSeleccionadosParaCompra.length > 0; else noRepuestosSeleccionadosParaCompra">
-        <div class="text-center w-100">
-            <div class="titulo gap-1">
-                <i class="bi bi-cart-fill"></i>
-                <span class="m-0">&nbsp;Carrito de compras</span><br>
-            </div><br>
-            <div class="flex flex-col">
-                <table id="cotizacion" class="table table-bordered mb-4 align-content-center">
-                    <thead>
-                        <tr>
-                            <th scope="col" class="text-left no-print"></th>
-                            <th scope="col" class="text-left">CÓDIGO</th>
-                            <th scope="col" class="text-left">NOMBRE DEL PRODUCTO</th>
-                            <th scope="col" class="text-left">CANTIDAD</th>
-                            <th scope="col" class="text-right">PRECIO UNI.</th>
-                            <th scope="col" class="text-right">SUBTOTAL</th>
-                            <th scope="col" class="text-right">TOTAL</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <ng-container *ngFor="let repuesto of repuestosSeleccionadosParaCompra">
-                            <tr>
-                                <td class="no-print">
-                                    <button (click)="eliminarDelCarrito(repuesto)" mat-icon-button type="button"
-                                    matTooltip="Eliminar del carrito">
-                                        <i class="bi bi-cart-dash-fill text-danger"></i>
-                                    </button>
-                                </td>
-                                <td class="font-light text-left">{{repuesto.code!}}</td>
-                                <td class="font-light text-left">{{repuesto.name}}</td>
-                                <td class="font-light text-center d-flex justify-content-center">
-                                    <div class="input-group" style="width: 100px; margin: 0;">
-                                        <button class="btn no-print" type="button"
-                                            (click)="disminuirCantidad(repuesto.code!)">-</button>
-                                        <input type="text" class="form-control" disabled
-                                            [value]="repuestoCantidades.get(repuesto.code!)" #cantidad
-                                            name="cantidad">
-                                        <button class="btn no-print" type="button"
-                                            (click)="aumentarCantidad(repuesto.code!)">+</button>
-                                    </div>
-                                </td>
-                                <td class="font-light text-right">${{repuesto.price}}</td>
-                                <td class="font-light text-right">${{repuesto.price ? (repuesto.price *
-                                    (repuestoCantidades.get(repuesto.code!) ?? 1)).toFixed(2) : ''}}</td>
-                                <td class="font-light text-right">${{repuesto.price ? (repuesto.price *
-                                    (repuestoCantidades.get(repuesto.code!) ?? 1)*1.15).toFixed(2) : ''}}</td>
-                            </tr>
-                        </ng-container>
-                    </tbody>
-                </table><br>
-                <button class="w-100" type="button" mat-raised-button color="primary" (click)="continuarPago()">
-                    <i class="bi bi-cash"></i> Continuar con el pedido</button>
+    <div class="container-fluid"> <ng-container
+            *ngIf="repuestosSeleccionadosParaCompra.length > 0; else noRepuestosSeleccionadosParaCompra">
+            <div class="text-center w-100">
+                <div class="titulo gap-1">
+                    <i class="bi bi-cart-fill"></i>
+                    <span class="m-0">&nbsp;Carrito de compras</span><br>
+                </div><br>
+
+                <div class="tab-content">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle table-custom">
+                            <thead>
+                                <tr>
+                                    <th class="text-center">CÓDIGO</th>
+                                    <th>NOMBRE DEL PRODUCTO</th>
+                                    <th class="text-center">CANTIDAD</th>
+                                    <th class="text-end">PRECIO UNI.</th>
+                                    <th class="text-end">SUBTOTAL</th>
+                                    <th class="text-end">
+                                        IVA({{ (iva * 100) | number: '1.0-0' }}%)
+                                    </th>
+                                    <th class="text-end">
+                                        TOTAL + IVA
+                                    </th>
+                                    <th class="text-end">ACCIONES</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <ng-container *ngFor="let repuesto of repuestosSeleccionadosParaCompra">
+                                    <tr>
+                                        <td data-label="Código">{{ repuesto.code! }}</td>
+                                        <td class="text-start" data-label="Nombre del producto">{{ repuesto.name }}</td>
+                                        <td data-label="Cantidad">
+                                            <div class="input-group" style="width: 100px; margin: 0 auto;">
+                                                <button class="btn no-print" type="button"
+                                                    (click)="disminuirCantidad(repuesto.code!)">-</button>
+                                                <input type="text" class="form-control text-center" disabled
+                                                    [value]="repuestoCantidades.get(repuesto.code!)" #cantidad
+                                                    name="cantidad">
+                                                <button class="btn no-print" type="button"
+                                                    (click)="aumentarCantidad(repuesto.code!)">+</button>
+                                            </div>
+                                        </td>
+                                        <td class="text-end" data-label="Precio uni.">${{ repuesto.price }}</td>
+                                        <td class="text-end" data-label="Subtotal">
+                                            ${{ repuesto.price ? (repuesto.price *
+                                            (repuestoCantidades.get(repuesto.code!)
+                                            ?? 1)).toFixed(2) : '' }}
+                                        </td>
+                                        <td class="text-end" data-label="IVA">
+                                            ${{ repuesto.price
+                                            ? (repuesto.price *
+                                            (repuestoCantidades.get(repuesto.code!) ?? 1) *
+                                            iva).toFixed(2)
+                                            : '' }}
+                                        </td>
+                                        <td class="text-end" data-label="Total + IVA">
+                                            ${{ repuesto.price ? (repuesto.price *
+                                            (repuestoCantidades.get(repuesto.code!)
+                                            ?? 1) * (1 + iva)).toFixed(2) : '' }}
+                                        </td>
+                                        <td class="no-print" data-label="Acción">
+                                            <button mat-icon-button matTooltip="Ver detalles del repuesto"
+                                                matTooltipPosition="above"
+                                                [routerLink]="['/repuesto/'+ repuesto.code!]">
+                                                <mat-icon color="primary">visibility</mat-icon>
+                                            </button>
+                                            <button (click)="abrirDialogEliminar(repuesto)" mat-icon-button
+                                                matTooltipPosition="above" matTooltip="Eliminar del carrito">
+                                                <mat-icon color="warn">remove_shopping_cart</mat-icon>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </ng-container>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="button-container">
+                    <button mat-raised-button color="primary" class="w-100 mt-3" (click)="retornar()">
+                        <mat-icon>arrow_back</mat-icon>Volver al catálogo
+                    </button>
+                    <button (click)="borrarRepuestosSeleccionadosParaCompra()" mat-raised-button class="w-100 mt-3"
+                        color="warn">
+                        <mat-icon>delete</mat-icon>Borrar todo
+                    </button>
+                    <button mat-raised-button color="primary" class="w-100 mt-3" (click)="continuarPago()">
+                        <mat-icon>arrow_forward</mat-icon>Continuar con el pedido
+                    </button>
+                </div>
             </div>
-        </div>
-    </ng-container>
-    <ng-template #noRepuestosSeleccionadosParaCompra>
-        <div class="col text-center">
-            <p>No tienes repuestos</p>
-        </div>
-        <a class="d-flex justify-content-center mt-5" href="/repuestos">
-            <button style="width: 100%;" type="button" mat-raised-button color="primary">
-                <mat-icon>store</mat-icon>Ver todos los productos</button>
-        </a>
-    </ng-template>
+        </ng-container>
+
+        <ng-template #noRepuestosSeleccionadosParaCompra>
+            <div class="col text-center mt-5">
+                <p>No tienes repuestos</p>
+            </div>
+            <a class="d-flex justify-content-center mt-5" href="/spare-part">
+                <button style="width: 100%;" type="button" mat-raised-button color="primary">
+                    <mat-icon>store</mat-icon> Ver todos los repuestos
+                </button>
+            </a>
+        </ng-template>
+    </div>
 </div>

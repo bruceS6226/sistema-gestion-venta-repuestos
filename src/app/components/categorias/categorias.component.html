@@ -1,37 +1,69 @@
-<div style="display: flex; justify-content: flex-end; align-items: center; position: absolute; right: 0;">
-    <a mat-mini-fab color="primary" matTooltip="Agregar una nueva categoría" matTooltipPosition="right"
-        href="/create-categoria">
-        <mat-icon>add</mat-icon>
-    </a>
-</div>
-<div class="container-fluid mt-3" style="width: 100%;">
-    <div class="tab-content">
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                    <th scope="col"></th>
-                    <th scope="col"></th>
-                    <th scope="col">Nombre</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let c of categorias">
+<div class="tab-content mt-3">
+    <table class="table table-hover align-middle table-custom">
+        <thead>
+            <tr class="table-header-row">
+                <th scope="col" class="column-name">Nombre</th>
+                <th scope="col" class="column-actions">Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="p-0">
+                    <div class="w-100 m-0">
+                        <input class="new-input" type="text" [(ngModel)]="newCategoryName" name="newCategoryName"
+                            required id="newCategoryInput" placeholder="Nueva Categoría" #newCategoryInput="ngModel"
+                            (input)="comprobarNuevoNombre()">
+                    </div>
+                </td>
+                <td class="action-buttons-cell">
+                    <button mat-icon-button color="primary" (click)="crearNuevaCategoria()"
+                        matTooltip="Guardar nueva categoría" matTooltipPosition="above"
+                        [disabled]="newCategoryInput.invalid || isLoading">
+                        <mat-icon *ngIf="!isLoading">done</mat-icon>
+                        <mat-spinner *ngIf="isLoading" [diameter]="20"></mat-spinner>
+                    </button>
+                    <button mat-icon-button color="accent" (click)="clearNewCategoryInput()" matTooltip="Limpiar"
+                        matTooltipPosition="above">
+                        <mat-icon>clear</mat-icon>
+                    </button>
+                </td>
+            </tr>
+            <tr *ngFor="let c of categorias">
+                <ng-container *ngIf="editandoId !== c._id">
                     <td>
-                        <a style="margin: -10px;" mat-icon-button color="primary" href="edit-categoria/{{c._id}}"
-                            matTooltip="Editar la categoría '{{c.name}}'" matTooltipPosition="right">
-                            <mat-icon>edit</mat-icon>
-                        </a>
+                        {{ c.name }}
                     </td>
-                    <td>
-                        <button style="margin: -10px;" mat-icon-button color="warn"
-                            (click)="abrirDialogEliminar(c._id,c.name)" matTooltip="Eliminar la categoría '{{c.name}}'"
-                            matTooltipPosition="right">
+                </ng-container>
+                <ng-container *ngIf="editandoId === c._id">
+                    <td class="p-0">
+                        <input #editInput class="new-input" type="text" [(ngModel)]="editedName" required />
+                    </td>
+                </ng-container>
+                <td class="action-buttons-cell">
+                    <ng-container *ngIf="editandoId !== c._id">
+                        <button mat-icon-button color="primary" (click)="activarEdicion(c)"
+                            matTooltip="Editar '{{c.name}}'" matTooltipPosition="above">
+                            <mat-icon>edit</mat-icon>
+                        </button>
+                    </ng-container>
+                    <ng-container *ngIf="editandoId === c._id">
+                        <button mat-icon-button color="primary" (click)="guardarEdicion(c)" matTooltip="Guardar"
+                            matTooltipPosition="above">
+                            <mat-icon>done</mat-icon>
+                        </button>
+                        <button mat-icon-button color="accent" (click)="cancelarEdicion()" matTooltip="Cancelar"
+                            matTooltipPosition="above">
+                            <mat-icon>clear</mat-icon>
+                        </button>
+                    </ng-container>
+                    <ng-container *ngIf="editandoId !== c._id">
+                        <button mat-icon-button color="warn" (click)="abrirDialogEliminar(c._id,c.name)"
+                            matTooltip="Eliminar la categoría '{{c.name}}'" matTooltipPosition="above">
                             <mat-icon>delete</mat-icon>
                         </button>
-                    </td>
-                    <td>{{ c.name }}</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+                    </ng-container>
+                </td>
+            </tr>
+        </tbody>
+    </table>
 </div>

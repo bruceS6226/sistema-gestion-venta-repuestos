@@ -1,0 +1,13 @@
+mat-icon {
+  font-size: 80px !important;
+  line-height: 1 !important;
+  width: 80px;
+  height: 80px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.container {
+    margin-top: 0px !important;
+  height: calc(100vh - 120px);
+}

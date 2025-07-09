@@ -1,6 +1,29 @@
-th {
-    position: sticky;
-    top: 0; /* Posición en la que el encabezado se quedará pegado */
-    background-color: white; /* Color de fondo para que el texto sea legible */
-    z-index: 10; /* Asegura que esté por encima del contenido */
+.nav-tabs {
+  white-space: nowrap;
+  overflow-x: auto;
+}
+
+.btn-rol {
+  text-align: center;
+  width: 60px !important;
+  max-width: 70px !important;
+  background-color: #f3f7f4;
+  display: inline-block;
+  border-radius: 12px;
+  padding: 5px;
+  font-size: 14px;
+  font-weight: 600;
+  color: rgb(35, 35, 35);
+  cursor: default;
+  user-select: none;
+}
+
+.btn-rol-low-stock {
+  background-color: #ffe6e6;
+  color: #b3261e;
+}
+
+.btn-rol-hight-stock {
+  background-color: #ebffe6;
+  color: #3eb31e;
 }

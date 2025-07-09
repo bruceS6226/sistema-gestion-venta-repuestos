@@ -33,16 +33,17 @@ export class DetallePagoComponent implements OnInit {
     this.detallesUsuario = new DetallesUsuario({ identityDocumentType: '', province: '', city: '' });
   }
   ngOnInit(): void {
+    this.mostrarDetallePedido = false;
     this.obtenerRepuestosSeleccionadosParaComprar();
     this.obtenerDetallesUsuario();
   }
+
 
   obtenerDetallesUsuario() {
     this._usuarioService.obtenerDetallesUsuario().subscribe({
       next: (value) => {
         if (value.length > 0) {
           const dialogRef = this.dialog.open(ContenidoDialogoSeleccionarDetalles, {
-            width: '40%',
             data: value
           });
 
@@ -50,8 +51,7 @@ export class DetallePagoComponent implements OnInit {
             if (result) {
               this.detallesUsuario = result;
               this.onProvinceChange(this.detallesUsuario.province)
-              console.log(this.items)
-              console.log(this.detallesUsuario._id)
+              this.mostrarDetallePedido = true;
             }
           });
         }
@@ -169,6 +169,8 @@ export class DetallePagoComponent implements OnInit {
       this._usuarioService.guardarDetallesUsuario(this.detallesUsuario).subscribe({
         next: (value) => {
           this._exitoService.mostrarExito(`¡Eso es todo! Ahora puedes continuar con el pago de tu/s producto/s`);
+          this.mostrarDetallePedido = true; // <-- Mostrar el detalle de pedido
+          this.detallesUsuario = value; // <-- Asegura que tienes el _id actualizado
           btn.disabled = false;
         },
         error: (e: HttpErrorResponse) => {
@@ -180,6 +182,7 @@ export class DetallePagoComponent implements OnInit {
       btn.disabled = false;
     }
   }
+
   calcularTotal(): number {
     let total = 0.0;
     for (const repuesto of this.repuestosSeleccionadosParaCompra) {
@@ -230,6 +233,9 @@ export class DetallePagoComponent implements OnInit {
   retornar(): void {
     window.history.back();
   }
+
+  public mostrarDetallePedido: boolean = false;
+
 }
 
 import { CommonModule } from '@angular/common';

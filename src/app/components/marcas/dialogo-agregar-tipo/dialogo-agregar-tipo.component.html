@@ -1,0 +1,43 @@
+<h2 mat-dialog-title>
+  {{ modoEdicion ? 'Editar tipo' : 'Agregar tipo a ' + data.modeloName }}
+</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="tipoForm" (ngSubmit)="onSubmit()">
+    <div class="form-floating mb-3 mt-3">
+      <input
+        type="text"
+        formControlName="name"
+        placeholder="Nombre del tipo"
+        class="form-control"
+        id="tipoName"
+      />
+      <label for="tipoName"><span class="text-danger">*</span>Nombre del tipo:</label>
+
+      <div *ngIf="tipoForm.get('name')?.errors?.['required'] && (tipoForm.get('name')?.dirty || tipoForm.get('name')?.touched)">
+        <small class="form-text text-danger">
+          El nombre del tipo es obligatorio.
+        </small>
+      </div>
+
+      <div *ngIf="tipoExistente">
+        <small class="form-text text-danger">
+          Este tipo ya existe en este modelo. Por favor, ingrese uno diferente.
+        </small>
+      </div>
+    </div>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button type="button" (click)="onCancel()">Cancelar</button>
+  <button
+    mat-raised-button
+    color="primary"
+    [disabled]="tipoForm.invalid || cargando"
+    (click)="onSubmit()"
+  >
+    <span *ngIf="!cargando">{{ modoEdicion ? 'Guardar Cambios' : 'Agregar' }}</span>
+    <mat-spinner *ngIf="cargando" diameter="20"></mat-spinner>
+  </button>
+</mat-dialog-actions>

@@ -1,0 +1,26 @@
+.btn-rol {
+    text-align: center;
+    min-width: 100px !important;
+    background-color: #f3f7f4;
+    display: inline-block;
+    padding: 6px 10px;
+    margin-right: 6px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    color: rgb(35, 35, 35);
+    cursor: default;
+    user-select: none;
+}
+
+.btn-rol-user {
+    color: #49835c;
+}
+
+.btn-rol-employee {
+    color: #4e919d;
+}
+
+.container-fluid{
+    background-color: none !important;
+}

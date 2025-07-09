@@ -10,8 +10,7 @@
                 <i class="bi bi-person-lines-fill"></i>
                 <span class="m-0">Detalles del cliente</span><br>
             </div>
-            <form class="w-100" (ngSubmit)="guardarDetalleUsuario(detalleUsuarioForm, btnGuardar)"
-                #detalleUsuarioForm="ngForm">
+<form #detalleUsuarioForm="ngForm" (ngSubmit)="guardarDetalleUsuario(detalleUsuarioForm, guardarBtn)">
                 <div class="row row-cols-1 row-cols-sm-2">
                     <div class="col">
                         <div class="form-floating mb-2 mt-3">
@@ -67,13 +66,13 @@
                             <input type="text" [(ngModel)]="detallesUsuario.identityDocumentNumber"
                                 name="identityDocumentNumber" required placeholder="Número de documento"
                                 #documentNumberInput="ngModel" class="form-control" id="identityDocumentNumber"
-                                pattern="^\d+$">
+                                pattern="^\d{10}$">
                             <label for="identityDocumentNumber"
                                 [style.color]="(detallesUsuario.identityDocumentNumber ? 'rgb(110, 110, 110)' : 'rgb(150, 150, 150)')">
                                 <span class="text-danger">*</span>Número de documento:</label>
                             <small class="form-text text-danger"
                                 [style.display]="(documentNumberInput.invalid && documentNumberInput.touched) ? 'block' : 'none'">
-                                Ingrese un número de documento válido
+                                Ingrese un número de documento válido (10 dígitos)
                             </small>
                         </div>
                     </div>
@@ -83,13 +82,13 @@
                         <div class="form-floating mb-2 mt-2">
                             <input type="text" [(ngModel)]="detallesUsuario.postalCode" name="postalCode" required
                                 placeholder="Código Postal" #postalCodeInput="ngModel" class="form-control"
-                                id="postalCode" pattern="^\d{6}$">
+                                id="postalCode" pattern="^\d+$">
                             <label for="postalCode"
                                 [style.color]="(detallesUsuario.postalCode ? 'rgb(110, 110, 110)' : 'rgb(150, 150, 150)')">
                                 <span class="text-danger">*</span>Código Postal:</label>
                             <small class="form-text text-danger"
                                 [style.display]="(postalCodeInput.invalid && postalCodeInput.touched) ? 'block' : 'none'">
-                                Debe llenar este campo obligatorio
+                                Ingrese un número de documento válido
                             </small>
                         </div>
                     </div>
@@ -154,18 +153,19 @@
                         </div>
                     </div>
                 </div><br>
-                <button class="w-100" type="button" mat-raised-button color="primary"
-                    (click)="btnGuardar.disabled = true; guardarDetalleUsuario(detalleUsuarioForm, btnGuardar)"
-                    #btnGuardar>
-                    <ng-container *ngIf="!btnGuardar.disabled; else loadingTemplate">
+                <button class="w-100" type="submit" mat-raised-button color="primary"
+                    (click)="guardarBtn.disabled = true; guardarDetalleUsuario(detalleUsuarioForm, guardarBtn)"
+                    #guardarBtn>
+                    <ng-container *ngIf="!guardarBtn.disabled; else loadingTemplate">
                         <i class="bi bi-person-vcard-fill"></i> Guardar información
                     </ng-container>
                     <ng-template #loadingTemplate>
                         <mat-progress-spinner #spinner [diameter]="24" mode="indeterminate"></mat-progress-spinner>
                     </ng-template></button>
+
             </form>
         </div>
-        <div class="col-lg-5">
+<div *ngIf="mostrarDetallePedido" class="col-lg-5">
             <div class="titulo gap-1 w-100">
                 <mat-icon>receipt_long</mat-icon>
                 <span class="m-0">Detalles del pedido</span><br>

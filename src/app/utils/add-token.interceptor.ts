@@ -24,6 +24,7 @@ export class AddTokenInterceptor implements HttpInterceptor {
     }
     return next.handle(request).pipe(
       catchError((error: HttpErrorResponse) => {
+        console.log(request)
         return throwError(() => error);
       })
     );

@@ -1,0 +1,266 @@
+<div class="return">
+    <button (click)="retornar()" mat-icon-button matTooltip="Regresar atrás">
+        <mat-icon class="fw-bold">arrow_back</mat-icon>
+    </button>
+</div>
+
+<div class="container">
+    <div class="form">
+        <h1 class="text-center">{{titulo}}</h1>
+
+        <form (ngSubmit)="onSubmit(repuestoForm)" #repuestoForm="ngForm">
+            <mat-stepper #stepper [orientation]="stepperOrientation" [linear]="false">
+
+                <mat-step label="Datos Básicos">
+                    <h2 class="stepper-section-title">Información Principal</h2>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-floating mb-3 mt-3">
+                                <input type="text" [(ngModel)]="repuesto.code" name="Código" required
+                                    (input)="comprobarCodigo()" placeholder="Código del repuesto"
+                                    #codeRepuestoInput="ngModel" class="form-control" id="code" [disabled]="isCode">
+                                <label for="code"><span class="text-danger">*</span>Código del repuesto:</label>
+                                <div
+                                    *ngIf="codeRepuestoInput.invalid && (codeRepuestoInput.dirty || codeRepuestoInput.touched)">
+                                    <small class="form-text text-danger" *ngIf="codeRepuestoInput.errors?.['required']">
+                                        El código del repuesto es obligatorio.
+                                    </small>
+                                </div>
+                                <small id="verificarNombreCuenta" class="form-text text-danger"
+                                    *ngIf="codeRepuestoInput.valid && existeCode">
+                                    Este código de repuesto ya existe. Por favor, ingrese uno diferente.
+                                </small>
+                                <small class="form-text text-success"
+                                    *ngIf="codeRepuestoInput.valid && !existeCode && codeRepuestoInput.touched && !isCode">
+                                    Este campo no se podrá editar una vez creado. Por favor, revise bien el código.
+                                </small>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-floating mb-3 mt-3">
+                                <input type="text" [(ngModel)]="repuesto.name" name="Nombre" required
+                                    placeholder="Nombre del repuesto" #nameRepuestoInput="ngModel" class="form-control"
+                                    id="name">
+                                <label for="name"><span class="text-danger">*</span>Nombre del repuesto:</label>
+                                <small class="form-text text-danger"
+                                    *ngIf="nameRepuestoInput.invalid && (nameRepuestoInput.dirty || nameRepuestoInput.touched)">
+                                    <span *ngIf="nameRepuestoInput.errors?.['required']">El nombre del repuesto es
+                                        obligatorio.</span>
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-floating mb-3 mt-3">
+                        <input type="text" [(ngModel)]="repuesto.description" name="Descripción" required
+                            placeholder="Descripción del repuesto" #descriptionRepuestoInput="ngModel"
+                            class="form-control" id="description">
+                        <label for="description"><span class="text-danger">*</span>Descripción del repuesto:</label>
+                        <small class="form-text text-danger"
+                            *ngIf="descriptionRepuestoInput.invalid && (descriptionRepuestoInput.dirty || descriptionRepuestoInput.touched)">
+                            <span *ngIf="descriptionRepuestoInput.errors?.['required']">La descripción del repuesto es
+                                obligatoria.</span>
+                        </small>
+                    </div>
+
+                    <div>
+                        <button mat-button matStepperNext color="primary" type="button" type="button">Siguiente</button>
+                    </div>
+                </mat-step>
+
+                <mat-step label="Inventario y Precio">
+                    <h2 class="stepper-section-title">Detalles de Stock y Costo</h2>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-floating mb-3 mt-3">
+                                <input type="number" [(ngModel)]="repuesto.stock" name="Stock" required
+                                    placeholder="Stock del repuesto" #stockRepuestoInput="ngModel" class="form-control"
+                                    id="stock" pattern="^\d+$">
+                                <label for="stock"><span class="text-danger">*</span>Stock del repuesto:</label>
+                                <small class="form-text text-danger"
+                                    *ngIf="stockRepuestoInput.invalid && (stockRepuestoInput.dirty || stockRepuestoInput.touched)">
+                                    <span *ngIf="stockRepuestoInput.errors?.['required']">El stock del repuesto es
+                                        obligatorio.</span>
+                                    <span *ngIf="stockRepuestoInput.errors?.['pattern']">Ingrese solo números enteros
+                                        mayores que 0.</span>
+                                </small>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-floating mb-3 mt-3">
+                                <input type="text" [(ngModel)]="repuesto.price" name="Precio" required
+                                    placeholder="Precio" #priceRepuestoInput="ngModel" class="form-control" id="price"
+                                    pattern="^\d+(\.\d{1,2})?$">
+                                <label for="price"><span class="text-danger">*</span>Precio:</label>
+                                <small class="form-text text-danger"
+                                    *ngIf="priceRepuestoInput.invalid && (priceRepuestoInput.dirty || priceRepuestoInput.touched)">
+                                    <span *ngIf="priceRepuestoInput.errors?.['required']">El precio es
+                                        obligatorio.</span>
+                                    <span *ngIf="priceRepuestoInput.errors?.['pattern']">Ingrese un precio válido (ej.
+                                        10.00).</span>
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <button mat-button matStepperPrevious type="button">Anterior</button>
+                        <button mat-button matStepperNext color="primary" type="button">Siguiente</button>
+                    </div>
+                </mat-step>
+
+                <mat-step label="Imágenes">
+                    <h2 class="stepper-section-title">Cargar Imágenes</h2>
+                    <p class="text-muted"><span class="text-danger">*</span>La imagen principal será la que se muestra
+                        en el catálogo.</p>
+                    <div class="image-upload-grid">
+                        <ng-container *ngFor="let imageControl of images.controls; let i = index">
+                            <div class="image-preview-item">
+                                <button mat-mini-fab color="warn" (click)="removeImage(i)"
+                                    *ngIf="imageControl.get('previewUrl')!.value" type="button" class="delete-image-btn"
+                                    matTooltipPosition="above" matTooltip="Eliminar imagen">
+                                    <mat-icon>close</mat-icon>
+                                </button>
+                                <div class="image-card" [class.main-image]="i === 0">
+                                    <img *ngIf="imageControl.get('previewUrl')!.value"
+                                        [src]="imageControl.get('previewUrl')!.value" alt="Preview"
+                                        class="imagenSecundaria">
+                                    <div class="image-placeholder" *ngIf="!imageControl.get('previewUrl')!.value">
+                                        <span *ngIf="i === 0" class="text-center text-danger">* Imagen principal</span>
+                                        <span *ngIf="i > 0" class="text-center text-muted">Imagen {{i + 1}}</span>
+                                    </div>
+                                    <input type="file" (change)="onFileChange($event, i)" class="file-input"
+                                        accept="image/png, image/jpg, image/jpeg">
+                                </div>
+                            </div>
+                        </ng-container>
+
+                        <div class="add-image-btn-container" *ngIf="images.length < 5">
+                            <button mat-fab color="primary" (click)="addImage()" matTooltipPosition="above"
+                                type="button" matTooltip="Agregar una nueva imagen">
+                                <mat-icon>add</mat-icon>
+                            </button>
+                        </div>
+                    </div>
+                    <div>
+                        <button mat-button matStepperPrevious type="button">Anterior</button>
+                        <button mat-button matStepperNext color="primary" type="button">Siguiente</button>
+                    </div>
+                </mat-step>
+
+                <mat-step label="Clasificación">
+                    <h2 class="stepper-section-title">Clasificación del Repuesto</h2>
+
+ <div class="row g-3">
+    <div class="col-md-6">
+        <div class="form-floating mb-3 mt-3">
+            <select class="form-select" [(ngModel)]="repuesto.category" name="Categoría" required
+                id="category" #categorySelect="ngModel">
+                <option [value]="null" disabled selected>Seleccione una categoría</option>
+                <option *ngFor="let categoria of categorias" [value]="categoria.name">{{ categoria.name }}</option>
+            </select>
+            <label for="category"><span class="text-danger">*</span>Categoría:</label>
+            <div *ngIf="categorySelect.invalid && (categorySelect.dirty || categorySelect.touched)">
+                <small class="form-text text-danger" *ngIf="categorySelect.errors?.['required']">
+                    La categoría es obligatoria.
+                </small>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="form-floating mb-3 mt-3">
+            <select class="form-select" [(ngModel)]="repuesto.brand" name="Marca" required
+                (change)="cambiarMarca($event)" id="brand" #brandSelect="ngModel">
+                <option [value]="null" disabled selected>Seleccione una marca</option>
+                <option *ngFor="let marca of marcas" [value]="marca.name">{{ marca.name }}</option>
+            </select>
+            <label for="brand"><span class="text-danger">*</span>Marca:</label>
+            <div *ngIf="brandSelect.invalid && (brandSelect.dirty || brandSelect.touched)">
+                <small class="form-text text-danger" *ngIf="brandSelect.errors?.['required']">
+                    La marca es obligatoria.
+                </small>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="form-floating mb-1 mt-1">
+            <select class="form-select" [(ngModel)]="repuesto.brandModel" name="Modelo" required
+                (change)="cambiarModelo($event)" id="model" #modelSelect="ngModel"
+                [disabled]="!repuesto.brand">
+                <option [value]="null" disabled selected *ngIf="!repuesto.brand">Seleccione una marca primero</option>
+                <option [value]="null" disabled selected *ngIf="repuesto.brand">Seleccione un modelo</option>
+                <option *ngFor="let modelo of modelos" [value]="modelo.name">{{ modelo.name }}</option>
+            </select>
+            <label for="model"><span class="text-danger">*</span>Modelo:</label>
+            <div *ngIf="modelSelect.invalid && (modelSelect.dirty || modelSelect.touched)">
+                <small class="form-text text-danger" *ngIf="modelSelect.errors?.['required']">
+                    El modelo es obligatorio.
+                </small>
+            </div>
+            </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="form-floating mb-1 mt-1">
+            <select class="form-select" [(ngModel)]="repuesto.modelType" name="Tipo" required id="type"
+                #typeSelect="ngModel" [disabled]="!repuesto.brandModel">
+                <option [value]="null" disabled selected *ngIf="!repuesto.brandModel">Seleccione un modelo primero</option>
+                <option [value]="null" disabled selected *ngIf="repuesto.brandModel">Seleccione un tipo</option>
+                <option *ngFor="let tipo of tipos" [value]="tipo.name">{{ tipo.name }}</option>
+            </select>
+            <label for="type"><span class="text-danger">*</span>Tipo:</label>
+            <div *ngIf="typeSelect.invalid && (typeSelect.dirty || typeSelect.touched)">
+                <small class="form-text text-danger" *ngIf="typeSelect.errors?.['required']">
+                    El tipo es obligatorio.
+                </small>
+            </div>
+            </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="form-floating mb-1 mt-1">
+            <input type="number" [(ngModel)]="repuesto.modelTypeYear" name="Año" required
+                placeholder="Año del modelo" #yearInput="ngModel" class="form-control" id="year"
+                min="1900" max="{{ getCurrentYear() + 5 }}">
+            <label for="year"><span class="text-danger">*</span>Año:</label>
+            <div *ngIf="yearInput.invalid && (yearInput.dirty || yearInput.touched)">
+                <small class="form-text text-danger" *ngIf="yearInput.errors?.['required']">
+                    El año es obligatorio.
+                </small>
+                <small class="form-text text-danger" *ngIf="yearInput.errors?.['min']">
+                    El año debe ser {{ yearInput.errors?.['min']?.min }} o posterior.
+                </small>
+                <small class="form-text text-danger" *ngIf="yearInput.errors?.['max']">
+                    El año no puede ser posterior a {{ yearInput.errors?.['max']?.max }}.
+                </small>
+                <small class="form-text text-danger" *ngIf="yearInput.errors?.['pattern']">
+                    Ingrese un año válido de 4 dígitos.
+                </small>
+            </div>
+        </div>
+    </div>
+</div>
+                    <div class="mt-4">
+                        <button mat-button matStepperPrevious type="button">Anterior</button> <button class="w-100"
+                            type="submit" mat-raised-button color="primary" [disabled]="existeCode || isLoading"
+                            (click)="onSubmit(repuestoForm)">
+                            <div class="d-flex align-items-center justify-content-center gap-2">
+                                <ng-container *ngIf="!isLoading; else loadingTemplate">
+                                    <mat-icon *ngIf="!isCode">add</mat-icon>
+                                    <mat-icon *ngIf="isCode">edit</mat-icon>
+                                    <span>{{buttonName}}</span>
+                                </ng-container>
+                                <ng-template #loadingTemplate>
+                                    <mat-progress-spinner [diameter]="24" mode="indeterminate"></mat-progress-spinner>
+                                </ng-template>
+                            </div>
+                        </button>
+                    </div>
+                </mat-step>
+            </mat-stepper>
+        </form>
+    </div>
+</div>

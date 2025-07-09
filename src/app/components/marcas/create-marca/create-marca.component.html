@@ -3,15 +3,17 @@
         <mat-icon class="fw-bold">arrow_back</mat-icon>
     </button>
 </div>
+
 <div class="container">
-    <div class="form" style="background-color: rgb(247, 255, 238); padding: 20px;
-    border-bottom: 1px solid #eeeeee;box-shadow: 2px 2px 2px 2px #f5f5f5;">
+    <div class="form">
         <form (ngSubmit)="onSubmit(repuestoForm)" #repuestoForm="ngForm">
+
             <div class="form-container">
-                <h1 class="text-center">{{titulo}}</h1>
+                <h1 class="text-center">{{ titulo }}</h1>
+
                 <div class="form-floating mb-3 mt-3">
-                    <input type="text" [(ngModel)]="marca.name" name="Nombre" required placeholder="Nombre del repuesto"
-                        #nameRepuestoInput="ngModel" class="form-control " id="name">
+                    <input type="text" [(ngModel)]="marca.name" name="Nombre" required placeholder="Nombre de la marca"
+                        #nameRepuestoInput="ngModel" class="form-control" id="name">
                     <label for="name"><span class="text-danger">*</span>Nombre de la marca:</label>
                     <small class="form-text text-danger"
                         [style.display]="(nameRepuestoInput.invalid && nameRepuestoInput.touched) ? 'block' : 'none'">
@@ -19,24 +21,36 @@
                     </small>
                 </div>
             </div>
-            <div class="image-upload-container">
-                <div class="row row-cols-lg-6">
-                    <div class="col m-1" style="width: 150px;">
-                        <div>
-                            <div class="card cardSecundaria">
-                                <span class="text-center"><span class="text-danger">*</span>Imagen
-                                    principal</span>
-                                <img *ngIf="image.get('previewUrl')!.value" [src]="image.get('previewUrl')!.value"
-                                    alt="Preview" class="imagenSecundaria">
-                            </div>
-                            <input type="file" (change)="onFileChange($event)" style="font-size: 7px;"
-                                placeholder="Imagen" accept="image/png, image/jpg, image/jpeg" required>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="mt-3">
-                <button class="w-100" mat-raised-button color="primary" type="submit">{{buttonName}}</button>
+
+            <h4 class="text-center">Logo de la Marca</h4>
+
+<div class="image-upload-grid">
+  <div class="image-preview-item">
+    <div class="image-card main-image">
+      <img *ngIf="image.get('previewUrl')!.value"
+           [src]="image.get('previewUrl')!.value"
+           alt="Preview" class="imagenSecundaria" />
+
+      <input type="file" (change)="onFileChange($event)" class="file-input"
+             accept="image/png, image/jpg, image/jpeg" required />
+
+      <button mat-mini-fab color="primary" class="upload-button" type="button"
+              (click)="fileInput.click()" matTooltip="Subir imagen">
+        <mat-icon>photo_camera</mat-icon>
+      </button>
+
+      <input #fileInput type="file" hidden (change)="onFileChange($event)"
+             accept="image/png, image/jpg, image/jpeg" />
+    </div>
+  </div>
+</div>
+
+
+
+            <div class="mt-4">
+                <button class="w-100 btn btn-primary" mat-raised-button color="primary" type="submit">
+                    <mat-icon>{{iconButton}}</mat-icon>{{ buttonName }}
+                </button>
             </div>
         </form>
     </div>

@@ -1,13 +1,207 @@
-.container {
-    margin-top: 30px !important;
+.container-fluid {
+    padding: 1rem;
+    background-color: white !important;
+    width: 100%;
+    border-radius: 5px;
+    box-shadow: 1px 3px 8px 1px rgba(0, 0, 0, 0.1);
+    z-index: 2;
 }
 
-.form-container {
+/* Section Titles */
+.section-title {
+    margin-bottom: 2.5rem;
+}
+
+.section-title h2 {
+    font-size: 2.2rem; /* Larger, more prominent titles */
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.section-title p {
+    font-size: 1.1rem;
+    color: #6c757d;
+}
+
+/* Brands Section */
+.brand-card {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    width: 200px; 
+    height: 150px;
+}
+
+.brand-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important; /* Lighter shadow on hover */
+}
+
+.brand-card .card {
+    border: 1px solid #e0e0e0; /* Subtle border */
+    border-radius: 8px; /* Slightly rounded corners */
+}
+
+.brand-card .card-body {
+    padding: 1rem;
+}
+
+.brand-image {
+    max-width: 100px; /* Max width for brand logos */
+    max-height: 100px; /* Max height for brand logos */
+    object-fit: contain;
+    filter: grayscale(30%); /* Grayscale brands for consistency */
+    transition: filter 0.3s ease-in-out;
+}
+
+.brand-card:hover .brand-image {
+    filter: grayscale(0%); /* Color on hover */
+}
+
+.brand-name {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #343a40;
+}
+
+/* Product Cards */
+.product-card {
+    border: 1px solid #e9ecef; /* Lighter border for products */
+    border-radius: 10px; /* More rounded corners */
+    overflow: hidden; /* Ensures image corners are also rounded within the card */
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0.75rem 1.5rem rgba(0, 0, 0, 0.1);
+}
+
+.product-link {
     display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
+    flex-direction: column;
+    height: 100%; /* Ensure link covers full card height excluding footer */
 }
 
-.form-field {
-    flex: 1 1 calc(50% - 1rem);
+.product-image-container {
+    width: 100%;
+    height: 200px; /* Fixed height for product images */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid #dee2e6;
+    overflow: hidden; /* Hide overflow for images that are too large */
+}
+
+.product-image {
+    width: auto;
+    height: 100%;
+    object-fit: contain;
+}
+
+.product-code {
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: #71797E;
+}
+
+.product-name {
+    font-size: 1.15rem;
+    line-height: 1.4;
+    min-height: 3.45rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    line-clamp: 3;
+    -webkit-box-orient: vertical;
+    color: #343a40;
+}
+
+.product-category,
+.product-brand {
+    font-size: 0.85rem;
+    margin-bottom: 0.25rem !important;
+    color: #71797E;
+}
+
+.product-category a,
+.product-brand a {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #0574A1;
+    text-decoration: underline;
+    transition: color 0.2s ease;
+}
+
+.product-category a:hover,
+.product-brand a:hover {
+    color: #c29e49;
+}
+
+.product-price {
+    font-size: 1.5rem;
+    margin-top: 1rem;
+    color: #c29e49 !important;
+    font-weight: 700;
+}
+
+
+.add-to-cart-btn {
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.add-to-cart-btn.mat-primary {
+    background-color: #c29e49; /* Primary blue */
+    color: white;
+}
+
+.add-to-cart-btn.mat-link {
+    background-color: #30a434 !important;
+    color: white;
+}
+
+.add-to-cart-btn:hover:not([disabled]) {
+    opacity: 0.9;
+}
+
+.mat-spinner {
+    margin: auto;
+}
+
+.noRepuestos h3 {
+    color: #6c757d;
+}
+
+/* Paginator */
+.custom-paginator {
+    background-color: #f8f9fa; /* Light background for paginator */
+    border-top: 1px solid #e9ecef;
+    padding: 10px 0;
+    margin-top: 2rem !important; /* More space above paginator */
+    border-radius: 0 0 10px 10px;
+}
+
+@media (max-width: 575.98px) {
+    .section-title h2 {
+        font-size: 1.8rem;
+    }
+    .brand-card {
+        width: 170px;
+        height: 150px;
+    }
+    .brand-image {
+        max-width: 100px;
+        max-height: 80px;
+    }
+    .product-image-container {
+        height: 180px;
+    }
+    .product-name {
+        font-size: 1rem;
+        min-height: 3rem; /* Adjust for smaller screens */
+    }
+    .product-price {
+        font-size: 1.3rem;
+    }
 }

@@ -1,32 +1,47 @@
-<div class="container-fluid mt-3" style="width: 100%;">
-    <div class="tab-content">
-        <table class="table table-hover">
+<div class="tab-content mt-3">
+    <div class="table-responsive">
+        <table class="table table-hover align-middle table-custom">
             <thead>
                 <tr>
-                    <th scope="col"></th>
-                    <th scope="col">Rol</th>
-                    <th scope="col">Nombre</th>
-                    <th scope="col">Correo electrónico</th>
-                    <th scope="col">Activo</th>
+                    <th scope="col" style="min-width: 200px;">Nombre</th>
+                    <th class="text-center" scope="col" style="min-width: 180px;">Rol</th>
+                    <th scope="col" style="min-width: 350px;">Correo electrónico</th>
+                    <th scope="col" style="min-width: 80px;">Activo</th>
+                    <th scope="col" style="min-width: 80px;">Acciones</th>
                 </tr>
             </thead>
             <tbody>
                 <tr *ngFor="let u of usuarios">
-                    <td>
-                        <button style="margin: -10px;" mat-icon-button color="primary"
-                            (click)="cambiarRolUsuario(u._id!, u.roles!)"
-                            matTooltip="Camniar el rol de '{{u.userName}}'" matTooltipPosition="right">
-                            <i class="bi bi-person-fill-gear"></i>
-                        </button>
-                    </td>
-                    <td>{{ u.roles }}</td>
+
+
                     <td>{{ u.userName }}</td>
+                    <td style="text-align: center;">
+                        <span *ngFor="let rol of u.roles" [ngClass]="{
+                                        'btn-rol-user': rol === 'user',
+                                        'btn-rol-employee': rol === 'employee'
+                                        }" class="btn-rol">
+                            {{ getLabelsRoles([rol]) }}
+                        </span>
+                    </td>
+
+
                     <td>{{ u.email }}</td>
-                    <td>
+                    <td style="text-align: center;">
                         <mat-slide-toggle color="warn" [checked]="u.isActive"
-                        (change)="abrirDialogoEsActivo(u._id!, u.userName!, u.isActive!)">
+                            (change)="abrirDialogoEsActivo(u._id!, u.userName!, u.isActive!)"
+                            [matTooltip]="u.isActive ? 'Desactivar a ' + u.userName : 'Activar a ' + u.userName"
+                            matTooltipPosition="above">
                         </mat-slide-toggle>
                     </td>
+                    <td style="text-align: center;">
+                        <button mat-icon-button color="primary" (click)="cambiarRolUsuario(u._id!, u.roles!)"
+                            [matTooltip]="'Cambiar el rol de ' + u.userName" matTooltipPosition="above"
+                            [attr.aria-label]="'Cambiar el rol de ' + u.userName" class="btn-icon"
+                            style="padding: 6px;">
+                            <mat-icon>settings</mat-icon>
+                        </button>
+                    </td>
+
                 </tr>
             </tbody>
         </table>

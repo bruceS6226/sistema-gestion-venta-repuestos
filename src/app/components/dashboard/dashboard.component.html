@@ -6,7 +6,7 @@
                 <mat-tab label="REPUESTOS">
                     <app-repuestos></app-repuestos>
                 </mat-tab>
-                <mat-tab label="USUARIOS">
+                <mat-tab *ngIf="!isEmploy" label="USUARIOS">
                     <app-usuarios></app-usuarios>
                 </mat-tab>
                 <mat-tab label="CATEGORIAS">

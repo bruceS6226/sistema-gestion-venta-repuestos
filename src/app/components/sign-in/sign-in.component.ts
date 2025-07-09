@@ -53,6 +53,7 @@ export class SignInComponent {
     this.captchaResolved = (captchaResponse && captchaResponse.length > 0) ? true : false
   }
   guardarUsuario(form: NgForm) {
+    form.control.markAllAsTouched();
     if (this.mostrarMensajeErrorCamposVacios(form)) {
       if (!this.aceptoTerminos) {
         this._errorService.msjError("Debe aceptar los términos y condiciones");
@@ -99,15 +100,9 @@ export class SignInComponent {
     this.signinSeccion1 = true;
   }
   mostrarSeccion2(form?: NgForm) {
-    if (form) {
-      if (this.mostrarMensajeErrorCamposVacios(form)) {
-        this.signinSeccion1 = false;
-        this.signinSeccion2 = true;
-      }
-    } else {
       this.signinSeccion1 = false;
       this.signinSeccion2 = true;
-    }
+    
   }
   regresarAcceso() {
     if (this.token == undefined) {

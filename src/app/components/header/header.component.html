@@ -1,33 +1,66 @@
-<div class="header navbar-expand-xl">
+<div class="header navbar-expand-xl" style="background-color: #71797E ; color: #ffffff;">
     <div class="header-container navbar-toggler">
-        <div class="header-container navbar-toggler d-flex justify-content-between">
-            <a class="navbar-toggler" href="/" title="Home" rel="Home">
-                <img class="navbar-toggler" style="width: 50px;" src="../../../assets/img/logo.png" alt="Home">
-            </a>
-            <div class="navbar-toggler">
-                <button type="button" mat-icon-button data-bs-toggle="offcanvas" data-bs-target="#carritoCompras">
-                    <mat-icon matBadge="0" class="my-custom-badge">shopping_cart</mat-icon>
-                </button>
-                <button class="navbar-toggler px-3" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobile"
-                    aria-controls="mobile" aria-expanded="false" [matMenuTriggerFor]="menuMobile">
-                    <mat-icon class="fs-2">menu</mat-icon>
-                </button>
-                <mat-menu #menuMobile="matMenu">
-                    <button mat-menu-item routerLink="/dashboard">Administrar repuestos</button>
-                    <button mat-menu-item>Editar mi perfil</button>
-                    <button mat-menu-item (click)="cerrarSesion()">Cerrar Sesión</button>
-                </mat-menu>
+        <div class="header-container d-flex flex-column d-xl-none p-3"
+            style="background-color: #71797E; color: #ffffff;">
+            <!-- Top bar con íconos -->
+            <div class="d-flex justify-content-between align-items-center w-100">
+                <!-- Logo a la izquierda -->
+                <a href="/" title="Home" rel="Home">
+                    <img style="width: 50px;" src="../../../assets/img/logo.png" alt="Home">
+                </a>
+
+                <!-- Íconos a la derecha -->
+                <div class="d-flex align-items-center gap-2">
+                    <!-- Botón para mostrar buscador (primero porque es más destacado) -->
+                    <button type="button" mat-icon-button (click)="mostrarBuscador = !mostrarBuscador">
+                        <mat-icon style="color: #ffffff;">search</mat-icon>
+                    </button>
+
+                    <!-- Carrito -->
+                    <button type="button" mat-icon-button data-bs-toggle="offcanvas" data-bs-target="#carritoCompras">
+                        <mat-icon [matBadge]="cantidadRepuestosSeleccionadosParaComprar"
+                            style="color: #ffffff;">shopping_cart</mat-icon>
+                    </button>
+
+                    <!-- Usuario o Acceso -->
+                    <ng-container *ngIf="usuario.userName !== ''">
+                        <button type="button" mat-icon-button [matMenuTriggerFor]="menuMobile" (click)="mostrarBuscador = false">
+                            <mat-icon style="color: #ffffff;">menu</mat-icon>
+                        </button>
+                        <mat-menu #menuMobile="matMenu">
+                            <button mat-menu-item routerLink="/dashboard">Administrar repuestos</button>
+                            <a mat-menu-item href="/change-password">Cambiar contraseña</a>
+                            <button mat-menu-item (click)="cerrarSesion()">Cerrar Sesión</button>
+                        </mat-menu>
+                    </ng-container>
+
+                    <ng-container *ngIf="usuario.userName === ''">
+                        <button type="button" mat-icon-button routerLink="/acceso">
+                            <mat-icon style="color: #ffffff;">person</mat-icon>
+                        </button>
+                    </ng-container>
+                </div>
             </div>
+
+            <!-- Formulario de búsqueda (oculto/visible por botón) -->
+            <form *ngIf="mostrarBuscador" class="input-group mt-2" (ngSubmit)="buscar(textoBuscar)" >
+                <input type="text" class="form-control" placeholder="Busca tu repuesto..." name="busqueda"
+                    [matAutocomplete]="auto" (keyup)="onInputChange()" [(ngModel)]="textoBuscar"
+                    style="padding: 8px 10px; background-color: #ffffff; color: #71797E;">
+                <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onOptionSelected($event)">
+                    <mat-option *ngFor="let repuesto of repuestosFitradosNombre" [value]="repuesto.name">
+                        <a href="/repuesto/{{repuesto.code}}">{{ repuesto.name }}</a>
+                    </mat-option>
+                </mat-autocomplete>
+                <button class="btn" type="submit" style="background-color: #0574A1; color: #ffffff;">
+                    <mat-icon>search</mat-icon>
+                </button>
+            </form>
         </div>
-        <form class="input-group" style="width: 96%;">
-            <input type="text" style="padding: 5px 10px 5px 10px !important;" class="form-control"
-                placeholder="Busca tu repuesto..." name="busqueda">
-            <button type="submit" data-bs-dismiss="offcanvas" style="background-color: black; color: white;">
-                <mat-icon>search</mat-icon>
-            </button>
-        </form>
     </div>
-    <div class="header-container collapse navbar-collapse" id="navbarTogglerDemo02">
+
+    <div class="header-container collapse navbar-collapse" id="navbarTogglerDemo02"
+        style="background-color: #71797E ; color: #ffffff;">
         <div style="width: 10%;">
             <a href="/" title="Home" rel="Home">
                 <img style="height: 75px;" src="../../../assets/img/logo.png" alt="Home">
@@ -35,9 +68,9 @@
         </div>
         <div style="width: 70%;">
             <form class="input-group w-50 mx-5">
-                <input type="text" style="padding: 18px 12px 18px 12px !important;" class="form-control"
-                    placeholder="Busca tu repuesto..." name="busqueda" [matAutocomplete]="auto"
-                    (keyup)="onInputChange()" [(ngModel)]="textoBuscar">
+                <input type="text" class="form-control" placeholder="Buscar repuesto por nombre o código..." name="busqueda"
+                    [matAutocomplete]="auto" (keyup)="onInputChange()" [(ngModel)]="textoBuscar"
+                    style="padding: 18px 12px; background-color: #ffffff; color: #71797E ;">
                 <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onOptionSelected($event)">
                     <mat-option *ngFor="let repuesto of repuestosFitradosNombre" [value]="repuesto.name">
                         <a href="/repuesto/{{repuesto.code}}">
@@ -45,9 +78,8 @@
                         </a>
                     </mat-option>
                 </mat-autocomplete>
-
-                <button class="btn" type="submit" style="background-color: black; color: white;" matTooltip="Buscar"
-                    matTooltipPosition="right" (click)="buscar(textoBuscar)">
+                <button class="btn" type="submit" style="background-color: #0574A1 ; color: #ffffff;"
+                    matTooltip="Buscar" matTooltipPosition="right" (click)="buscar(textoBuscar)">
                     <mat-icon>search</mat-icon>
                 </button>
             </form>
@@ -55,23 +87,24 @@
         <div style="width: 5%;">
             <button type="button" mat-icon-button data-bs-toggle="offcanvas" data-bs-target="#carritoCompras"
                 matTooltip="Carrito de compras" matTooltipPosition="left">
-                <mat-icon class="my-custom-badge"
-                    [matBadge]="cantidadRepuestosSeleccionadosParaComprar">shopping_cart</mat-icon>
+                <mat-icon class="my-custom-badge" style="color: #ffffff;"
+                    [matBadge]="cantidadRepuestosSeleccionadosParaComprar">
+                    shopping_cart
+                </mat-icon>
             </button>
         </div>
         <div style="width: 15%;">
-            <button *ngIf="usuario.userName === ''" mat-button routerLink="/acceso"
-                style="background-color: #FAFF04; width: 100%; border: 0px; color: black; height: 40px;">
-                ACCESO
+            <button *ngIf="usuario.userName === ''" mat-raised-button routerLink="/acceso"
+                style="background-color: #0574A1; width: 100%; color: #ffffff; height: 40px;">
+                <mat-icon>person</mat-icon>ACCESO
             </button>
-            <button *ngIf="usuario.userName !== ''" mat-button class="dropdown-toggle" [matMenuTriggerFor]="menu"
-                style="background-color: #FAFF04; width: 100%; border: 0px; color: black; height: 40px;">
-                {{usuario.userName}}
+            <button *ngIf="usuario.userName !== ''" mat-raised-button class="dropdown-toggle" [matMenuTriggerFor]="menu"
+                style="background-color: #0574A1 ; width: 100%; color: #ffffff; height: 40px;">
+                <mat-icon>person</mat-icon>{{usuario.userName}}
             </button>
             <mat-menu #menu="matMenu">
-                <a *ngIf="usuario.roles?.[0] === 'admin' || usuario.roles?.[0] === 'manager'" mat-menu-item
+                <a *ngIf="usuario.roles?.[0] === 'admin' || usuario.roles?.[0] === 'employee'" mat-menu-item
                     href="/dashboard">Administrar repuestos</a>
-                <a mat-menu-item href="#">Editar mi perfil</a>
                 <a mat-menu-item href="/change-password">Cambiar contraseña</a>
                 <a mat-menu-item (click)="cerrarSesion()">Cerrar Sesión</a>
             </mat-menu>
@@ -79,11 +112,12 @@
     </div>
 </div>
 
-<div class="offcanvas offcanvas-end" data-bs-scroll="true" tabindex="-1" id="carritoCompras">
-    <div style="background-color: #FAFF04;" class="offcanvas-header py-4">
+<div style="background-color: #ffffff;" class="offcanvas offcanvas-end" data-bs-scroll="true" tabindex="-1"
+    id="carritoCompras">
+    <div style="background-color: #C29D49  ; color: #ffffff;" class="offcanvas-header py-4">
         <mat-icon>shopping_bag</mat-icon>
-        <h2 class="offcanvas-title align-items-center m-0 mx-2"><b>MIS PRODUCTOS</b></h2>
-        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        <h2 class="offcanvas-title align-items-center m-0 mx-2"><b>MIS REPUESTOS</b></h2>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
     <div class="offcanvas-body">
         <ng-container *ngIf="cantidadRepuestosSeleccionadosParaComprar > 0; else sinRepuestosSeleccionados">
@@ -91,10 +125,10 @@
                 <div class="position-relative">
                     <button (click)="eliminarDelCarrito(repuesto)" mat-mini-fab type="button"
                         class="position-absolute shadow-none top-0 end-0 rounded-0" color="link">
-                        <i class="bi bi-trash-fill text-danger"></i>
+                        <mat-icon color="warn" matTooltip="Eliminar del carrito">cancel</mat-icon>
                     </button>
                 </div>
-                <div class="border border-black-300">
+                <div class="border border-black-300" style="background-color: #ffffff;">
                     <a class="row" href="/repuesto/{{repuesto.code}}">
                         <div class="col-lg-5">
                             <img class="imagenRepuestoCarrito" src="{{repuesto.images?.[0]}}" alt="">
@@ -110,21 +144,19 @@
             <br><br>
             <h3><b>TOTAL: ${{calcularTotal()}} + IVA</b></h3>
             <a href="/cart-detail">
-                <button mat-raised-button color="primary" class="w-100" style="margin: 5px 0 15px 0 ;">
-                    <mat-icon>shopping_cart_checkout</mat-icon>Ver mas detalles
+                <button mat-raised-button class="w-100" color="primary">
+                    <mat-icon>shopping_cart_checkout</mat-icon>Ver más detalles
                 </button>
             </a>
-            <button (click)="borrarRepuestosSeleccionadosParaCompra()" mat-raised-button color="warn" class="w-100">
-                <mat-icon>delete</mat-icon>Borrar todo
-            </button>
         </ng-container>
         <ng-template #sinRepuestosSeleccionados>
             <div class="col text-center">
                 <p>No tienes repuestos</p>
             </div>
             <a class="d-flex justify-content-center mt-5" (click)="buscar('')">
-                <button style="width: 100%;" type="button" mat-raised-button color="primary">
-                    <mat-icon>store</mat-icon>Ver todos los productos</button>
+                <button mat-raised-button class="w-100" color="primary">
+                    <mat-icon>store</mat-icon>Ver todos los repuestos
+                </button>
             </a>
         </ng-template>
     </div>

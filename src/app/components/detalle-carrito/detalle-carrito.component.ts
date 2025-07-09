@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { ConfirmarComponent } from 'src/app/dialogs/confirmar/confirmar.component';
 import { Repuesto } from 'src/app/models/repuesto';
 import { ActualizarComponentService } from 'src/app/services/actualizar.component.service';
 import { ErrorService } from 'src/app/services/error.service';
@@ -20,6 +22,7 @@ export class DetalleCarritoComponent implements OnInit {
   public foto: string = '';
   public cantidadRepuestosSeleccionadosParaComprar: number = 0;
   public repuestoCantidades: Map<string, number> = new Map<string, number>();
+  public  iva: number = environment.IVA/100;
 
   constructor(private _repuestoService: RepuestoService, private route: ActivatedRoute, private _errorService: ErrorService,
     private _actualizarComponentService: ActualizarComponentService, private router: Router, private dialog: MatDialog,) {
@@ -27,11 +30,38 @@ export class DetalleCarritoComponent implements OnInit {
       next: () => {
         this.ngOnInit()
       },
-    })
+    });
+    this._actualizarComponentService.actualizarHeader$.subscribe(() => {
+      this.loadCarritoFromLocalStorage();
+    });
   }
   ngOnInit(): void {
     this.obtenerRepuestosSeleccionadosParaComprar();
+    this.loadCarritoFromLocalStorage();
   }
+
+  private _cantidadRepuestosSubject = new BehaviorSubject<number>(0);
+  public cantidadRepuestosSeleccionadosParaComprar$: Observable<number> = this._cantidadRepuestosSubject.asObservable();
+    private loadCarritoFromLocalStorage(): void {
+    const repuestosJson = localStorage.getItem('repuestosSeleccionadosParaCompra');
+    if (repuestosJson) {
+      try {
+        this.repuestosSeleccionadosParaCompra = JSON.parse(repuestosJson);
+        this.cantidadRepuestosSeleccionadosParaComprar = this.repuestosSeleccionadosParaCompra.length;
+        this._cantidadRepuestosSubject.next(this.cantidadRepuestosSeleccionadosParaComprar);
+      } catch (error) {
+        console.error('Error al analizar los datos del localStorage:', error);
+        this.repuestosSeleccionadosParaCompra = [];
+        this.cantidadRepuestosSeleccionadosParaComprar = 0;
+        this._cantidadRepuestosSubject.next(0);
+      }
+    } else {
+      this.repuestosSeleccionadosParaCompra = [];
+      this.cantidadRepuestosSeleccionadosParaComprar = 0;
+      this._cantidadRepuestosSubject.next(0);
+    }
+  }
+
   async obtenerRepuestosSeleccionadosParaComprar() {
     const repuestosJson = localStorage.getItem('repuestosSeleccionadosParaCompra');
     const repuestoCantidadesJson = localStorage.getItem('repuestoCantidades');
@@ -46,7 +76,7 @@ export class DetalleCarritoComponent implements OnInit {
           const promesas = this.repuestosSeleccionadosParaCompra.map(repuesto => {
             return new Promise<void>((resolve) => {
               this.repuestoCantidades.set(repuesto.code!, 1);
-              resolve(); // Resolvemos la promesa después de la operación
+              resolve();
             });
           });
 
@@ -82,6 +112,17 @@ export class DetalleCarritoComponent implements OnInit {
     }
   }
 
+    abrirDialogEliminar(repuesto: Repuesto): void {
+      const titulo = `¿Desea eliminar el repuesto "${repuesto.name}" del carrito?`;
+      const contenido = 'Este repuesto se eliminará del carrito, pero puede volver a agregarlo cuando lo desee.';
+      const dialogRef = this.dialog.open(ConfirmarComponent, {
+        data: { titulo, contenido },
+      });
+      dialogRef.afterClosed().subscribe(result => {
+        if (result) { this.eliminarDelCarrito(repuesto) }
+      });
+    }
+
   eliminarDelCarrito(repuesto: Repuesto) {
     let repuestosSeleccionadosParaCompra = [];
     const repuestosJson = localStorage.getItem('repuestosSeleccionadosParaCompra');
@@ -106,7 +147,6 @@ export class DetalleCarritoComponent implements OnInit {
       this.router.navigate(['/payment-detail']);
     } else {
       const dialogRef = this.dialog.open(ContenidoDialogoIniciarSesion, {
-        width: '40%',
       });
       dialogRef.afterClosed().subscribe(result => {
         if (result === 'login') {
@@ -116,6 +156,14 @@ export class DetalleCarritoComponent implements OnInit {
     }
   }
 
+    borrarRepuestosSeleccionadosParaCompra(): void {
+    localStorage.removeItem('repuestosSeleccionadosParaCompra');
+    this.loadCarritoFromLocalStorage();
+    this._actualizarComponentService.notificarDetalleCarrito();
+    this._actualizarComponentService.notificarHeader();
+  }
+
+  
   retornar(): void {
     window.history.back();
   }

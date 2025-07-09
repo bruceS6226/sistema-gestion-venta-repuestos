@@ -1,63 +1,197 @@
+<!-- Botón flotante para agregar marca -->
 <div style="display: flex; justify-content: flex-end; align-items: center; position: absolute; right: 0;">
-  <a mat-mini-fab color="primary" matTooltip="Agregar una nueva marca" matTooltipPosition="right" href="/create-marca">
+  <a mat-mini-fab color="primary" matTooltip="Agregar una nueva marca" matTooltipPosition="above" href="/create-marca">
     <mat-icon>add</mat-icon>
   </a>
 </div>
-<div class="container-fluid mt-3" style="width: 100%;">
+
+<!-- Leyenda de colores -->
+<div class="legend">
+  <div><span class="legend-dot marca"></span> Marca</div>
+  <div><span class="legend-dot modelo"></span> Modelo</div>
+  <div><span class="legend-dot tipo"></span> Tipo</div>
+</div>
+
+<!-- Árbol visual -->
+<div class="container-fluid mt-3 tree-container">
   <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
+
+    <!-- Nodo sin hijos -->
     <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
-      <button mat-icon-button disabled></button>
-      <button *ngIf="treeControl.getLevel(node) === 2" mat-button class="fw-normal d-flex justify-content-start">
-        {{ node.name }}</button>
-      <button *ngIf="treeControl.getLevel(node) < 2" mat-button
-        (click)="alAbrirMenu(treeControl.getLevel(node), node._id)" [matMenuTriggerFor]="menu"
-        class="fw-normal d-flex justify-content-start">
-        {{ node.name }}</button>
+      <div [ngClass]="{
+          'tree-node': true,
+          'marca-node': treeControl.getLevel(node) === 0,
+          'modelo-node': treeControl.getLevel(node) === 1,
+          'tipo-node': treeControl.getLevel(node) === 2
+        }">
+        <div class="d-flex align-items-center justify-content-between w-100">
+          <div class="d-flex align-items-center">
+            <button mat-icon-button disabled></button>
+            <span class="fw-normal">{{ node.name }}</span>
+          </div>
+
+          <!-- Acciones responsivas -->
+          <ng-container *ngIf="isMobile; else desktopActions">
+            <button mat-icon-button [matMenuTriggerFor]="menu"
+              (click)="alAbrirMenu(treeControl.getLevel(node), node._id, node.name)">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+          </ng-container>
+
+          <ng-template #desktopActions>
+            <div class="action-buttons">
+              <!-- Acciones tipo -->
+              <ng-container *ngIf="treeControl.getLevel(node) === 2">
+                <button mat-icon-button color="primary" matTooltip="Editar tipo"
+                  (click)="abrirDialogoEditarTipo(node._id, getParentNodeName(node), node._id)">
+                  <mat-icon>edit</mat-icon>
+                </button>
+                <button mat-icon-button color="warn" matTooltip="Eliminar tipo"
+                  (click)="abrirDialogoEliminar(node._id, node.name, treeControl.getLevel(node))">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </ng-container>
+              <!-- Acciones modelo -->
+              <ng-container *ngIf="treeControl.getLevel(node) === 1">
+                <button mat-icon-button color="accent" matTooltip="Agregar tipo"
+                  (click)="abrirDialogoAgregarTipo(node._id, node.name)">
+                  <mat-icon>add</mat-icon>
+                </button>
+                <button mat-icon-button color="primary" matTooltip="Editar modelo"
+                  (click)="abrirDialogoEditarModelo(node._id, getParentNodeName(node), node._id)">
+                  <mat-icon>edit</mat-icon>
+                </button>
+                <button mat-icon-button color="warn" matTooltip="Eliminar modelo"
+                  (click)="abrirDialogoEliminar(node._id, node.name, treeControl.getLevel(node))">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </ng-container>
+              <!-- Acciones marca -->
+              <ng-container *ngIf="treeControl.getLevel(node) === 0">
+                <button mat-icon-button color="accent" matTooltip="Agregar modelo"
+                  (click)="abrirDialogoAgregarModelo(node._id, node.name)">
+                  <mat-icon>add</mat-icon>
+                </button>
+                <a mat-icon-button color="primary" matTooltip="Editar marca" [href]="'/edit-marca/' + node._id">
+                  <mat-icon>edit</mat-icon>
+                </a>
+                <button mat-icon-button color="warn" matTooltip="Eliminar marca"
+                  (click)="abrirDialogoEliminar(node._id, node.name, treeControl.getLevel(node))">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </ng-container>
+            </div>
+          </ng-template>
+        </div>
+      </div>
     </mat-tree-node>
 
+    <!-- Nodo con hijos -->
     <mat-tree-node *matTreeNodeDef="let node; when: hasChild" matTreeNodePadding>
-      <button mat-icon-button matTreeNodeToggle [attr.aria-label]="'Toggle ' + node.name">
-        <mat-icon class="mat-icon-rtl-mirror">
-          {{ treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right' }}
-        </mat-icon>
-      </button>
-      <button mat-button [matMenuTriggerFor]="menu" (click)="alAbrirMenu(treeControl.getLevel(node), node._id)"
-        class="fw-normal d-flex justify-content-start">
-        {{ node.name }}</button>
-    </mat-tree-node>
-  </mat-tree>
-  <mat-menu #menu="matMenu">
-    <button mat-menu-item *ngIf="nodoSeleccionado === 0">
-      <mat-icon>add</mat-icon> Agregar un nuevo modelo 
-    </button>
-    <button mat-menu-item *ngIf="nodoSeleccionado === 0">
-      <mat-icon>edit</mat-icon>
-      <a href="/edit-marca">Editar marca</a>
-    </button>
-    <button mat-menu-item *ngIf="nodoSeleccionado === 0">
-      <mat-icon>delete</mat-icon>
-      <a>Eliminar marca</a>
-    </button>
+      <div [ngClass]="{
+          'tree-node': true,
+          'marca-node': treeControl.getLevel(node) === 0,
+          'modelo-node': treeControl.getLevel(node) === 1
+        }">
+        <div class="d-flex align-items-center justify-content-between w-100">
+          <div class="d-flex align-items-center">
+            <button mat-icon-button matTreeNodeToggle [attr.aria-label]="'Toggle ' + node.name">
+              <mat-icon class="mat-icon-rtl-mirror">
+                {{ treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right' }}
+              </mat-icon>
+            </button>
+            <span class="fw-normal">{{ node.name }}</span>
+          </div>
 
-    <button mat-menu-item *ngIf="nodoSeleccionado === 1">
-      <mat-icon>add</mat-icon> Agregar un nuevo tipo
+          <!-- Acciones responsivas -->
+          <ng-container *ngIf="isMobile; else desktopActionsWithChildren">
+            <button mat-icon-button [matMenuTriggerFor]="menu"
+              (click)="alAbrirMenu(treeControl.getLevel(node), node._id, node.name)">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+          </ng-container>
+
+          <ng-template #desktopActionsWithChildren>
+            <div class="action-buttons">
+              <!-- Acciones modelo -->
+              <ng-container *ngIf="treeControl.getLevel(node) === 1">
+                <button mat-icon-button color="accent" matTooltip="Agregar tipo"
+                  (click)="abrirDialogoAgregarTipo(node._id, node.name)">
+                  <mat-icon>add</mat-icon>
+                </button>
+                <button mat-icon-button color="primary" matTooltip="Editar modelo"
+                  (click)="abrirDialogoEditarModelo(node._id, getParentNodeName(node), node._id)">
+                  <mat-icon>edit</mat-icon>
+                </button>
+                <button mat-icon-button color="warn" matTooltip="Eliminar modelo"
+                  (click)="abrirDialogoEliminar(node._id, node.name, treeControl.getLevel(node))">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </ng-container>
+              <!-- Acciones marca -->
+              <ng-container *ngIf="treeControl.getLevel(node) === 0">
+                <button mat-icon-button color="accent" matTooltip="Agregar modelo"
+                  (click)="abrirDialogoAgregarModelo(node._id, node.name)">
+                  <mat-icon>add</mat-icon>
+                </button>
+                <a mat-icon-button color="primary" matTooltip="Editar marca" [href]="'/edit-marca/' + node._id">
+                  <mat-icon>edit</mat-icon>
+                </a>
+                <button mat-icon-button color="warn" matTooltip="Eliminar marca"
+                  (click)="abrirDialogoEliminar(node._id, node.name, treeControl.getLevel(node))">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </ng-container>
+            </div>
+          </ng-template>
+        </div>
+      </div>
+    </mat-tree-node>
+
+  </mat-tree>
+
+  <!-- Menú contextual para móviles -->
+<mat-menu #menu="matMenu">
+  <!-- Marca -->
+  <ng-container *ngIf="nodoSeleccionado === 0">
+    <button mat-menu-item (click)="abrirDialogoAgregarModelo(marca._id!, marca.name!)">
+      <mat-icon>add</mat-icon> Agregar modelo
     </button>
-    <button mat-menu-item *ngIf="nodoSeleccionado === 1">
+    <button mat-menu-item>
+      <mat-icon>edit</mat-icon>
+      <a href="/edit-marca/{{marca._id}}">Editar marca</a>
+    </button>
+    <button mat-menu-item (click)="abrirDialogoEliminar(marca._id!, marca.name!, nodoSeleccionado)">
+      <mat-icon>delete</mat-icon>
+      <span>Eliminar marca</span>
+    </button>
+  </ng-container>
+
+  <!-- Modelo -->
+  <ng-container *ngIf="nodoSeleccionado === 1">
+    <button mat-menu-item (click)="abrirDialogoAgregarTipo(modelo._id!, modelo.name!)">
+      <mat-icon>add</mat-icon> Agregar tipo
+    </button>
+    <button mat-menu-item (click)="abrirDialogoEditarModelo(marca._id!, marca.name!, modelo._id!)">
       <mat-icon>edit</mat-icon>
       <a href="/edit-marca">Editar modelo</a>
     </button>
-    <button mat-menu-item *ngIf="nodoSeleccionado === 1">
+    <button mat-menu-item (click)="abrirDialogoEliminar(modelo._id!, modelo.name!, nodoSeleccionado)">
       <mat-icon>delete</mat-icon>
-      <a>Eliminar modelo</a>
+      <span>Eliminar modelo</span>
     </button>
+  </ng-container>
 
-    <button mat-menu-item *ngIf="nodoSeleccionado === 2">
+  <!-- Tipo -->
+  <ng-container *ngIf="nodoSeleccionado === 2">
+    <button mat-menu-item (click)="abrirDialogoEditarTipo(modelo._id!, modelo.name!, tipo._id!)">
       <mat-icon>edit</mat-icon>
-      <a href="/edit-marca">Editar tipo</a>
+      <span>Editar tipo</span>
     </button>
-    <button mat-menu-item *ngIf="nodoSeleccionado === 2">
+    <button mat-menu-item (click)="abrirDialogoEliminar(tipo._id!, tipo.name!, nodoSeleccionado)">
       <mat-icon>delete</mat-icon>
-      <a>Eliminar tipo</a>
+      <span>Eliminar tipo</span>
     </button>
-  </mat-menu>
+  </ng-container>
+</mat-menu>
 </div>

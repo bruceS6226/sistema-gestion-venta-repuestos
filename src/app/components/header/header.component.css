@@ -1,6 +1,6 @@
 .header {
     width: 100%;
-    background-color: white;
+    background-color: #456673;
     position: fixed;
     z-index: 1000;
     top: 0;
@@ -9,8 +9,8 @@
 .header-container {
     align-items: center;
     text-align: center;
-    border-bottom: 1px solid #eeeeee;
-    box-shadow: 0 2px 0 0 #f9f9f9;
+    border-bottom: 0.2px solid #eeeeee;
+    box-shadow: 0 0.2px 0 0 #f9f9f9;
 }
 
 .header-container>* {
@@ -19,8 +19,8 @@
 
 .my-custom-badge {
     .mat-badge-content {
-        background-color: rgb(247, 251, 4);
-        color: black;
+        background-color: #0574A1;
+        color: white;
     }
 }
 

@@ -1,12 +1,284 @@
-.container {
-    text-align: start;
-    max-width: 1150px !important;
-}
-.titulo {
-    top: 77px;
+.catalogue-filtered-container {
+    background-color: white;
+    border-radius: 8px;
+    max-width: 1260px !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    padding: 2.5rem;
+    margin-top: 50px !important;
+    margin-bottom: -20px !important;
 }
 
-.categorias {
+.section-title {
+    margin-bottom: 2rem;
+    padding: 0.75rem 1rem;
+    background-color: #F8F9FA;
+    border-radius: 6px;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.section-title h5 {
+    font-size: 1.25rem;
+    color: #343a40;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.section-title mat-icon {
+    font-size: 1.5rem;
+    margin-right: 0.5rem;
+    color: #0574A1;
+}
+
+.filters-section {
+    background-color: #F8F9FA;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.05);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
     position: sticky;
-    top: 78px;
+    top: 105px;
+    align-self: flex-start;
+    max-height: calc(100vh - 40px);
+    overflow-y: auto;
+}
+
+.filters-form {
+    background-color: transparent !important;
+    border: none;
+    padding: 0 !important;
+}
+
+.custom-select {
+    padding: 0.75rem 1rem;
+    border-radius: 6px;
+    border: 1px solid #ced4da;
+    font-size: 1rem;
+    color: black;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 16px 12px;
+}
+
+.custom-select.placeholder-color {
+    color: #909090;
+}
+
+.product-card {
+    border: 1px solid #e9ecef;
+    border-radius: 10px;
+    overflow: hidden;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0.75rem 1.5rem rgba(0, 0, 0, 0.1);
+    background-color: #F2F2F2 !important;
+}
+
+.product-link {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.product-image-container {
+    width: 100%;
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid #dee2e6;
+    overflow: hidden;
+    background-color: #fefefe;
+}
+
+.product-image {
+    width: auto;
+    height: 100%;
+    object-fit: contain;
+}
+
+.product-code {
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: #71797E;
+}
+
+.product-name {
+    font-size: 1.15rem;
+    line-height: 1.4;
+    min-height: 3.45rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    line-clamp: 3;
+    -webkit-box-orient: vertical;
+    color: #343a40;
+}
+
+.product-category,
+.product-brand {
+    font-size: 0.85rem;
+    margin-bottom: 0.25rem !important;
+    color: #71797E;
+}
+
+.product-category a,
+.product-brand a {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #0574A1;
+    text-decoration: underline;
+    transition: color 0.2s ease;
+}
+
+.product-category a:hover,
+.product-brand a:hover {
+    color: #c29e49;
+}
+
+.product-price {
+    font-size: 1.5rem;
+    margin-top: 1rem;
+    color: #c29e49 !important;
+    font-weight: 700;
+}
+
+.add-to-cart-btn {
+    transition: background-color 0.3s ease, color 0.3s ease;
+    border-radius: 6px;
+    padding: 0.75rem 1rem;
+}
+
+.add-to-cart-btn.mat-primary {
+    background-color: #c29e49;
+    color: white;
+}
+
+.add-to-cart-btn.mat-link {
+    background-color: #30a434 !important;
+    color: white;
+}
+
+.add-to-cart-btn[disabled] {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.add-to-cart-btn .spinner-border {
+    color: white;
+    margin-right: 0.5rem;
+}
+
+.add-to-cart-btn i {
+    font-size: 1.1rem;
+}
+
+.no-repuestos-message {
+    text-align: center;
+    margin-top: 3rem;
+    font-size: 1.2rem;
+    color: #6c757d;
+}
+
+.spinner-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 40vh;
+}
+
+.custom-paginator {
+    background-color: #f8f9fa;
+    border-top: 1px solid #e9ecef;
+    padding: 10px 0;
+    margin-top: 2rem !important;
+    border-radius: 0 0 8px 8px;
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.return-button-container {
+    margin-bottom: 1.5rem;
+    margin-left: 1rem;
+}
+
+.return-button {
+    color: #0574A1;
+    border: 1px solid #e0e0e0;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    transition: all 0.2s ease-in-out;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.return-button:hover {
+    background-color: #0574A1;
+    color: white;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.return-button mat-icon {
+    font-size: 1.5rem;
+}
+
+@media (max-width: 991.98px) {
+    .filters-section, .results-section {
+        margin-bottom: 2rem;
+    }
+    .catalogue-filtered-container {
+        padding: 1.5rem;
+    }
+    .section-title h5 {
+        font-size: 1.1rem;
+    }
+    .custom-select {
+        padding: 0.6rem 0.8rem;
+        font-size: 0.9rem;
+    }
+    .product-name {
+        font-size: 1.05rem;
+    }
+    .product-price {
+        font-size: 1.4rem;
+    }
+    .filters-section {
+        position: static;
+        max-height: none;
+        overflow-y: visible;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .catalogue-filtered-container {
+        padding: 1rem;
+    }
+    .section-title h5 {
+        font-size: 1rem;
+    }
+    .product-image-container {
+        height: 160px;
+    }
+    .product-name {
+        font-size: 0.95rem;
+        min-height: 2.7rem;
+    }
+    .product-price {
+        font-size: 1.2rem;
+    }
+    .return-button-container {
+        margin-left: 0.5rem;
+        margin-bottom: 1rem;
+    }
 }

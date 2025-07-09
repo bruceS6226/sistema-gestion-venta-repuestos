@@ -1,0 +1,46 @@
+<h2 mat-dialog-title>
+  {{ modoEdicion ? 'Editar modelo' : 'Agregar modelo a ' + data.marcaName }}
+</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="modeloForm" (ngSubmit)="onSubmit()">
+    <div class="form-floating mb-3 mt-3">
+      <input 
+        type="text" 
+        formControlName="name"
+        placeholder="Nombre del modelo" 
+        class="form-control" 
+        id="modelName"
+      />
+      <label for="modelName">
+        <span class="text-danger">*</span>Nombre del modelo:
+      </label>
+
+      <div *ngIf="modeloForm.get('name')?.errors?.['required'] && (modeloForm.get('name')?.dirty || modeloForm.get('name')?.touched)">
+        <small class="form-text text-danger">
+          El nombre del modelo es obligatorio.
+        </small>
+      </div>
+
+      <div *ngIf="modeloExistente">
+        <small class="form-text text-danger">
+          Este modelo ya existe en esta marca. Por favor, ingrese uno diferente.
+        </small>
+      </div>
+    </div>
+
+    <!-- Mover los botones DENTRO del formulario -->
+    <mat-dialog-actions align="end">
+      <button mat-button type="button" (click)="onCancel()">Cancelar</button>
+      <button 
+        type="submit"
+        mat-raised-button 
+        color="primary" 
+        [disabled]="modeloForm.invalid || cargando"
+      >
+        <span *ngIf="!cargando">{{ modoEdicion ? 'Guardar Cambios' : 'Agregar' }}</span>
+        <mat-spinner *ngIf="cargando" diameter="20"></mat-spinner>
+      </button>
+    </mat-dialog-actions>
+  </form>
+</mat-dialog-content>

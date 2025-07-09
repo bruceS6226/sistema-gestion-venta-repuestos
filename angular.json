@@ -25,7 +25,7 @@
               "src/assets"
             ],
             "styles": [
-              "@angular/material/prebuilt-themes/indigo-pink.css",
+              "themes/theme.css",
               "src/styles.css"
             ],
             "scripts": []
