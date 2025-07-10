@@ -121,40 +121,42 @@ export class HeaderComponent implements OnInit {
     }
   }
 
-filterRepuestos(value: string): void {
-  const filters: RepuestoFilters = { search: value };
-  this._repuestoService.buscarRepuestos(filters).subscribe({
-    next: (res) => {
-      this.repuestosFitradosNombre = res.results;
-
-      // 👇 Agrega esto
-      if (this.repuestosFitradosNombre.length === 0) {
-        this._repuestoService.obtenerRepuesto(value).subscribe({
-          next: (repuesto) => {
-            if (repuesto) {
-              this.repuestosFitradosNombre = [repuesto];
+  private hayRepuestoPorCodigo: Boolean = false;
+  filterRepuestos(value: string): void {
+    const filters: RepuestoFilters = { search: value };
+    this._repuestoService.buscarRepuestos(filters).subscribe({
+      next: (res) => {
+        this.repuestosFitradosNombre = res.results;
+        this.hayRepuestoPorCodigo = false;
+        if (this.repuestosFitradosNombre.length === 0) {
+          this._repuestoService.obtenerRepuesto(value).subscribe({
+            next: (repuesto) => {
+              if (repuesto) {
+                this.repuestosFitradosNombre = [repuesto];
+                this.hayRepuestoPorCodigo = true;
+              }
             }
-          },
-          error: (e: HttpErrorResponse) => {
-            // puedes manejar error si quieres
-          }
-        });
+          });
+        }
+      },
+      error: (e: HttpErrorResponse) => {
+        this._errorService.msjError(e);
+        this.repuestosFitradosNombre = [];
       }
-    },
-    error: (e: HttpErrorResponse) => {
-      this._errorService.msjError(e);
-      this.repuestosFitradosNombre = [];
-    }
-  });
-}
+    });
+  }
 
 
   buscar(textoBuscar: string): void {
-    if (textoBuscar) {
-      this.router.navigate(['/spare-part'], { queryParams: { search: textoBuscar } });
-      this.textoBuscar = '';
+    if (this.hayRepuestoPorCodigo) {
+      this.router.navigate([`/repuesto/${this.repuestosFitradosNombre[0].code}`]);
     } else {
-      this.router.navigate(['/spare-part']);
+      if (textoBuscar) {
+        this.router.navigate(['/spare-part'], { queryParams: { search: textoBuscar } });
+        this.textoBuscar = '';
+      } else {
+        this.router.navigate(['/spare-part']);
+      }
     }
   }
 

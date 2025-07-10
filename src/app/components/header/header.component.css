@@ -19,7 +19,7 @@
 
 .my-custom-badge {
     .mat-badge-content {
-        background-color: #0574A1;
+        background-color: #0574A1 !important;
         color: white;
     }
 }
