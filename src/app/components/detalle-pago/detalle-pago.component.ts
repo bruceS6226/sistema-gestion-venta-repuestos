@@ -130,6 +130,9 @@ export class DetallePagoComponent implements OnInit {
     }
     return true;
   }
+
+
+  public appUrl = environment.appUrl;
   realizarPago(form: NgForm, btn: MatButton) {
     if (this.verificarFormulario(form)) {
       const ordenCompra: OrdenCompra = new OrdenCompra({ userDetailID: this.detallesUsuario._id, items: this.items })
@@ -138,8 +141,8 @@ export class DetallePagoComponent implements OnInit {
           this._exitoService.mostrarExito(`Pronto será redirigido al link para pago`);
           const pago: Pago = new Pago({
             orderID: value.orderID,
-            successURL: "https://venta-repuestos.netlify.app/payment-correct",
-            cancelURL: "https://venta-repuestos.netlify.app/payment-detail",
+            successURL: `${this.appUrl}/payment-correct`,
+            cancelURL: `${this.appUrl}/payment-detail`,
             tax: 0.15
           })
           btn.disabled = false;
@@ -239,6 +242,7 @@ export class DetallePagoComponent implements OnInit {
 }
 
 import { CommonModule } from '@angular/common';
+import { environment } from 'src/environment/environment';
 @Component({
   selector: 'dialog-content',
   template: `

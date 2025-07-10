@@ -56,11 +56,12 @@
                                             : '' }}
                                         </td>
                                         <td class="text-end" data-label="Total + IVA">
-  <span class="precio-final">
-    ${{ repuesto.price ? (repuesto.price *
-    (repuestoCantidades.get(repuesto.code!) ?? 1) * (1 + iva)).toFixed(2) : '' }}
-  </span>
-</td>
+                                            <span class="precio-final">
+                                                ${{ repuesto.price ? (repuesto.price *
+                                                (repuestoCantidades.get(repuesto.code!) ?? 1) * (1 + iva)).toFixed(2) :
+                                                '' }}
+                                            </span>
+                                        </td>
 
                                         <td class="no-print" data-label="Acción">
                                             <button mat-icon-button matTooltip="Ver detalles del repuesto"
