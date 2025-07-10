@@ -138,8 +138,8 @@ export class DetallePagoComponent implements OnInit {
           this._exitoService.mostrarExito(`Pronto será redirigido al link para pago`);
           const pago: Pago = new Pago({
             orderID: value.orderID,
-            successURL: "http://127.0.0.1:4200/payment-correct",
-            cancelURL: "http://127.0.0.1:4200/payment-detail",
+            successURL: "https://venta-repuestos.netlify.app/payment-correct",
+            cancelURL: "https://venta-repuestos.netlify.app/payment-detail",
             tax: 0.15
           })
           btn.disabled = false;
