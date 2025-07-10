@@ -17,7 +17,7 @@
                     </button>
 
                     <!-- Carrito -->
-                    <button type="button" mat-icon-button data-bs-toggle="offcanvas" data-bs-target="#carritoCompras">
+                    <button type="button" mat-icon-button data-bs-target="#carritoCompras" routerLink="/cart-detail" (click)="mostrarBuscador = false">
                         <mat-icon [matBadge]="cantidadRepuestosSeleccionadosParaComprar"
                             style="color: #ffffff;">shopping_cart</mat-icon>
                     </button>
@@ -35,7 +35,7 @@
                     </ng-container>
 
                     <ng-container *ngIf="usuario.userName === ''">
-                        <button type="button" mat-icon-button routerLink="/acceso">
+                        <button type="button" mat-icon-button routerLink="/acceso" (click)="mostrarBuscador = false">
                             <mat-icon style="color: #ffffff;">person</mat-icon>
                         </button>
                     </ng-container>
@@ -85,8 +85,7 @@
             </form>
         </div>
         <div style="width: 5%;">
-            <button type="button" mat-icon-button data-bs-toggle="offcanvas" data-bs-target="#carritoCompras"
-                matTooltip="Carrito de compras" matTooltipPosition="left">
+            <button type="button" mat-icon-button matTooltip="Carrito de compras" matTooltipPosition="left" routerLink="/cart-detail">
                 <mat-icon class="my-custom-badge" style="color: #ffffff;"
                     [matBadge]="cantidadRepuestosSeleccionadosParaComprar">
                     shopping_cart

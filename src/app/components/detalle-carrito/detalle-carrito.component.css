@@ -32,3 +32,19 @@
         flex: 1 1 100%;
     }
 }
+
+.precio-final {
+    text-align: center;
+    min-width: 100px !important;
+    background-color: #d9e4db;
+    display: inline-block;
+    padding: 6px 10px;
+    margin-right: 6px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    color: rgb(35, 35, 35);
+    cursor: default;
+    user-select: none;
+    color: #1f703a;
+}

@@ -100,16 +100,11 @@ export class HeaderComponent implements OnInit {
 
   private timer: any;
   onInputChange(): void {
-    if (this.timer) {
-      clearTimeout(this.timer);
+    if (this.textoBuscar && this.textoBuscar.length > 2) {
+      this.filterRepuestos(this.textoBuscar);
+    } else {
+      this.repuestosFitradosNombre = [];
     }
-    this.timer = setTimeout(() => {
-      if (this.textoBuscar && this.textoBuscar.length > 2) {
-        this.filterRepuestos(this.textoBuscar);
-      } else {
-        this.repuestosFitradosNombre = [];
-      }
-    }, 400);
   }
 
   onOptionSelected(event: MatAutocompleteSelectedEvent): void {
@@ -148,6 +143,7 @@ export class HeaderComponent implements OnInit {
 
 
   buscar(textoBuscar: string): void {
+    this.mostrarBuscador = false;
     if (this.hayRepuestoPorCodigo) {
       this.router.navigate([`/repuesto/${this.repuestosFitradosNombre[0].code}`]);
     } else {

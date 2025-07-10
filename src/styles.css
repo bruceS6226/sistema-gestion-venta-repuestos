@@ -214,12 +214,6 @@ i {
     object-fit: cover;
 }
 
-.my-custom-badge {
-    .mat-badge-content {
-        background-color: rgb(247, 251, 4);
-        color: black;
-    }
-}
 
 /*paginacion*/
 mat-paginator {
