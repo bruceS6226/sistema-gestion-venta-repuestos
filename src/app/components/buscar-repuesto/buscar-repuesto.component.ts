@@ -84,7 +84,7 @@ export class BuscarRepuestoComponent implements OnInit {
         filters['brand'] = params['brand'];
         this.selectedBrand = params['brand'];
         if (this.modelos.length === 0 || this.selectedBrand !== (this.marcas.find(m => m.name === this.selectedBrand)?.name || '')) {
-            this.obtenerModelos(this.selectedBrand);
+          this.obtenerModelos(this.selectedBrand);
         }
       } else {
         this.selectedBrand = '';
@@ -94,7 +94,7 @@ export class BuscarRepuestoComponent implements OnInit {
         filters['brandModel'] = params['brandModel'];
         this.selectedModel = params['brandModel'];
         if (this.tipos.length === 0 || this.selectedModel !== (this.modelos.find(mod => mod.name === this.selectedModel)?.name || '')) {
-            this.obtenerTipos(this.selectedModel);
+          this.obtenerTipos(this.selectedModel);
         }
       } else {
         this.selectedModel = '';
@@ -104,7 +104,7 @@ export class BuscarRepuestoComponent implements OnInit {
         filters['modelType'] = params['modelType'];
         this.selectedModelType = params['modelType'];
         if (this.anios.length === 0) {
-            this.loadHardcodedYears();
+          this.loadHardcodedYears();
         }
       } else {
         this.selectedModelType = '';
@@ -131,10 +131,10 @@ export class BuscarRepuestoComponent implements OnInit {
     this.initializeButtonStates();
 
     if (this.timer) {
-        clearTimeout(this.timer);
+      clearTimeout(this.timer);
     }
     this.timer = setTimeout(() => {
-        this.cargando = false;
+      this.cargando = false;
     }, 300);
   }
 
@@ -178,10 +178,10 @@ export class BuscarRepuestoComponent implements OnInit {
         this.initializeButtonStates();
 
         if (this.timer) {
-            clearTimeout(this.timer);
+          clearTimeout(this.timer);
         }
         this.timer = setTimeout(() => {
-            this.cargando = false;
+          this.cargando = false;
         }, 900);
       },
       error: (err) => {
@@ -244,6 +244,10 @@ export class BuscarRepuestoComponent implements OnInit {
       "2015", "2016", "2017", "2018", "2019", "2020",
       "2021", "2022", "2023", "2024", "2025"
     ];
+  }
+
+  getCurrentYear(): number {
+    return new Date().getFullYear();
   }
 
   cambiarCategoria(event: any) {
@@ -331,14 +335,23 @@ export class BuscarRepuestoComponent implements OnInit {
     });
   }
 
-  cambiarAnio(event: any) {
-    const selectedValue = event.target.value;
+  cambiarAnio(anio: any): void {
+    const year = Number(anio);
+
+    if (isNaN(year)) {
+      return;
+    }
+    if (year <= 1900 || year >= 2026) {
+      return;
+    }
+
     let queryParams = { ...this.route.snapshot.queryParams };
-    if (selectedValue) {
-      queryParams['modelTypeYear'] = selectedValue;
+    if (year) {
+      queryParams['modelTypeYear'] = year;
     } else {
       delete queryParams['modelTypeYear'];
     }
+
     this.router.navigate([], {
       relativeTo: this.route,
       queryParams: queryParams,
@@ -346,16 +359,18 @@ export class BuscarRepuestoComponent implements OnInit {
     });
   }
 
+
+
   private resetAndLoadFilters(): void {
-      this.selectedCategory = '';
-      this.selectedBrand = '';
-      this.selectedModel = '';
-      this.selectedModelType = '';
-      this.selectedYear = '';
-      this.modelos = [];
-      this.tipos = [];
-      this.anios = [];
-      this.router.navigate(['/spare-part'], { queryParams: {} });
+    this.selectedCategory = '';
+    this.selectedBrand = '';
+    this.selectedModel = '';
+    this.selectedModelType = '';
+    this.selectedYear = '';
+    this.modelos = [];
+    this.tipos = [];
+    this.anios = [];
+    this.router.navigate(['/spare-part'], { queryParams: {} });
   }
 
   private initializeButtonStates(): void {

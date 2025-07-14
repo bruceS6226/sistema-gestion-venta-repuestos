@@ -4,6 +4,7 @@
     align-items: center;
     margin-bottom: 20px;
 }
+
 .cardSecundaria {
     width: 150px;
     height: 150px;
@@ -22,135 +23,142 @@
     object-fit: cover;
 }
 
-    /* Nuevo estilo para los títulos de sección dentro del stepper */
-    .stepper-section-title {
-        color: #C29D49; /* Color secundario para subtítulos de sección */
-        margin-top: 20px; /* Ajuste de margen superior para separar del stepper */
-        margin-bottom: 15px;
-        padding-bottom: 5px;
-        border-bottom: 1px solid #eee; /* Línea sutil para separar secciones */
-    }
+/* Nuevo estilo para los títulos de sección dentro del stepper */
+.stepper-section-title {
+    color: #C29D49;
+    /* Color secundario para subtítulos de sección */
+    margin-top: 20px;
+    margin-bottom: 15px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #eee;
+    /* Línea sutil para separar secciones */
+}
 
-    /* Estilos para la carga de imágenes */
-    .image-upload-grid {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 15px;
-        align-items: flex-start;
-        margin-top: 20px; /* Ajuste de margen superior para separar del stepper */
-        margin-bottom: 30px;
-    }
+/* Estilos para la carga de imágenes */
+.image-upload-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    align-items: flex-start;
+    margin-top: 20px;
+    margin-bottom: 30px;
+}
 
-    .image-preview-item {
-        position: relative;
-        width: 150px;
-        height: 150px;
-        border: 1px dashed #ccc;
-        border-radius: 8px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        overflow: hidden;
-    }
+.image-preview-item {
+    position: relative;
+    width: 150px;
+    height: 150px;
+    border: 1px dashed #ccc;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
 
-    .image-card {
-        width: 100%;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        background-color: #f9f9f9;
-        cursor: pointer;
-        position: relative;
-    }
+.image-card {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #f9f9f9;
+    cursor: pointer;
+    position: relative;
+}
 
-    .image-card.main-image {
-        border: 2px solid #C29D49;
-    }
+.image-card.main-image {
+    border: 2px solid #C29D49;
+}
 
-    .imagenSecundaria {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
+.imagenSecundaria {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
 
-    .image-placeholder {
-        text-align: center;
-        font-size: 0.8em;
-        color: #999;
-    }
+.image-placeholder {
+    text-align: center;
+    font-size: 0.8em;
+    color: #999;
+}
 
-    .file-input {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        top: 0;
-        left: 0;
-        opacity: 0;
-        cursor: pointer;
-    }
+.file-input {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    cursor: pointer;
+}
 
-    .delete-image-btn {
-        position: absolute;
-        top: 0;
-        right: 0;
-        z-index: 10;
-        width: 25px !important;
-        height: 30px !important;
-        min-width: 30px !important;
-        line-height: 30px !important;
-    }
-    .delete-image-btn .mat-icon {
-        font-size: 20px;
-        width: 20px;
-        height: 20px;
-        line-height: 20px;
-    }
+.delete-image-btn {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 10;
+    width: 25px !important;
+    height: 30px !important;
+    min-width: 30px !important;
+    line-height: 30px !important;
+}
 
-    .add-image-btn-container {
-        width: 150px;
-        height: 150px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border: 1px dashed #ddd;
-        border-radius: 8px;
-        background-color: #fcfcfc;
-    }
+.delete-image-btn .mat-icon {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+}
 
-    .add-image-btn-container .mat-fab {
-        background-color: #0574A1;
-        color: white;
-    }
+.add-image-btn-container {
+    width: 150px;
+    height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px dashed #ddd;
+    border-radius: 8px;
+    background-color: #fcfcfc;
+}
+
+.add-image-btn-container .mat-fab {
+    background-color: #0574A1;
+    color: white;
+}
 
 /* Estilos para las listas desplegables (select nativos) */
 .form-select {
-    height: calc(3.5rem + 2px); /* Ajuste para que coincida con form-floating */
-    line-height: calc(3.5rem + 2px); /* Asegura que el texto se centre verticalmente */
-    padding-top: 0; /* Elimina el padding superior */
-    padding-bottom: 0; /* Elimina el padding inferior */
-    text-align: center; /* Centra el texto horizontalmente */
-    text-align-last: center; /* Para Edge/IE */
-    -moz-text-align-last: center; /* Para Firefox */
+    height: calc(3.5rem + 2px);
+    /* Ajuste para que coincida con form-floating */
+    line-height: calc(3.5rem + 2px);
+    /* Asegura que el texto se centre verticalmente */
+    padding-top: 0;
+    /* Elimina el padding superior */
+    padding-bottom: 0;
+    /* Elimina el padding inferior */
+    text-align: center;
+    /* Centra el texto horizontalmente */
+    text-align-last: center;
+    /* Para Edge/IE */
+    -moz-text-align-last: center;
 }
 
-/* Centrar texto dentro de las opciones */
 .form-select option {
     text-align: center;
 }
 
 
-    .mat-stepper-horizontal {
-        margin-top: 20px;
-    }
+.mat-stepper-horizontal {
+    margin-top: 20px;
+}
 
-    .mat-stepper-vertical {
-        margin-top: 20px;
-    }
+.mat-stepper-vertical {
+    margin-top: 20px;
+}
 
-    .mat-step-header {
-        padding: 24px 0; /* Ajusta el padding si es necesario */
-    }
-
+.mat-step-header {
+    padding: 24px 0;
+}

@@ -36,7 +36,7 @@
 
                     <div class="price-stock-section mb-0">
                         <h2 class="product-price-detail mb-2">Precio: <span class="fw-bold">${{repuesto.price |
-                                number:'1.2-2'}}</span> (incluye IVA)</h2>
+                                number:'1.2-2'}}</span> (no incluye IVA)</h2>
                         <h3 class="product-stock-status fw-bold mb-0"
                             [ngClass]="{'text-success': repuesto.stock! > 0, 'text-danger': repuesto.stock! <= 0}">
                             <ng-container *ngIf="repuesto.stock !== null && repuesto.stock !== undefined">

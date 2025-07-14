@@ -146,7 +146,7 @@
 }
 
 .product-price {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     margin-top: 1rem;
     color: #c29e49 !important;
     font-weight: 700;
@@ -281,4 +281,13 @@
         margin-left: 0.5rem;
         margin-bottom: 1rem;
     }
+}
+
+
+.form-control-search{
+    padding: .75rem .75rem !important;
+}
+input::placeholder {
+  color: #919191;
+  opacity: 1;
 }

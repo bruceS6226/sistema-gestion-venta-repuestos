@@ -76,20 +76,19 @@
 
                     <div class="row">
                         <div class="col-md-6">
-                            <div class="form-floating mb-3 mt-3">
-                                <input type="number" [(ngModel)]="repuesto.stock" name="Stock" required
-                                    placeholder="Stock del repuesto" #stockRepuestoInput="ngModel" class="form-control"
-                                    id="stock" pattern="^\d+$">
-                                <label for="stock"><span class="text-danger">*</span>Stock del repuesto:</label>
-                                <small class="form-text text-danger"
-                                    *ngIf="stockRepuestoInput.invalid && (stockRepuestoInput.dirty || stockRepuestoInput.touched)">
-                                    <span *ngIf="stockRepuestoInput.errors?.['required']">El stock del repuesto es
-                                        obligatorio.</span>
-                                    <span *ngIf="stockRepuestoInput.errors?.['pattern']">Ingrese solo números enteros
-                                        mayores que 0.</span>
-                                </small>
-                            </div>
-                        </div>
+    <div class="form-floating mb-3 mt-3">
+        <input type="number" [(ngModel)]="repuesto.stock" name="Stock" required
+            placeholder="Stock del repuesto" #stockRepuestoInput="ngModel" class="form-control"
+            id="stock" pattern="^[0-9]+$">
+        <label for="stock"><span class="text-danger">*</span>Stock del repuesto:</label>
+        <small class="form-text text-danger"
+            *ngIf="stockRepuestoInput.invalid && (stockRepuestoInput.dirty || stockRepuestoInput.touched)">
+            <span *ngIf="stockRepuestoInput.errors?.['required']">El stock del repuesto es obligatorio.</span>
+            <span *ngIf="stockRepuestoInput.errors?.['pattern']">Ingrese solo números enteros (incluido 0).</span>
+        </small>
+    </div>
+</div>
+
                         <div class="col-md-6">
                             <div class="form-floating mb-3 mt-3">
                                 <input type="text" [(ngModel)]="repuesto.price" name="Precio" required
