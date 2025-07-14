@@ -74,7 +74,7 @@ export class RepuestosComponent {
   }
 
   
-  public tamanioPagina: number = 10;
+  public tamanioPagina: number = 8;
     volverArriba() {
     const container = document.querySelector('.repuestos') as HTMLElement;
     var posicion = container.offsetTop - 110;
