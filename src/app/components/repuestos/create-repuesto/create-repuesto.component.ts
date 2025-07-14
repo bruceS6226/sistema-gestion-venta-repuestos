@@ -1,9 +1,7 @@
-// src/app/components/repuestos/create-repuesto/create-repuesto.component.ts
-
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, NgForm, Validators, FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Repuesto } from 'src/app/models/repuesto'; // Asegúrate de que esta ruta sea correcta
+import { Repuesto } from 'src/app/models/repuesto';
 import { ErrorService } from 'src/app/services/error.service';
 import { ExitoService } from 'src/app/services/exito.service';
 import { RepuestoService } from 'src/app/services/repuesto.service';
@@ -53,21 +51,10 @@ export class CreateRepuestoComponent implements OnInit, OnDestroy {
   ) {
     this.repuesto = new Repuesto({});
     this.images = this.fb.array([]);
-    // No añadir imagen por defecto aquí. Se hará en ngOnInit condicionalmente.
-
-    // --- INICIO DE CAMBIO CLAVE ---
-    // Suscribirse a los parámetros de ruta en el constructor para configurarlo temprano
     this.route.params.subscribe(params => {
-      // Si params['code'] es undefined o null, asigna '0'. De lo contrario, asigna el valor.
       this.code = params['code'] || '0';
-      // isCode será true si el código NO es '0' (es decir, es un código real de edición)
       this.isCode = (this.code !== '0');
-
-      // Aquí ya no necesitamos agregar imagen, se maneja en ngOnInit.
     });
-    // --- FIN DE CAMBIO CLAVE ---
-
-
     this.breakpointObserver
       .observe([Breakpoints.HandsetPortrait, Breakpoints.HandsetLandscape])
       .pipe(takeUntil(this.unsubscribe$))
@@ -84,8 +71,7 @@ export class CreateRepuestoComponent implements OnInit, OnDestroy {
     this.obtenerCategorias();
     this.obtenerMarcas();
 
-    // Solo cargar repuesto si estamos en modo edición (isCode es true)
-    if (this.isCode) { // <-- Usar this.isCode aquí
+    if (this.isCode) {
       this.buttonName = 'ACTUALIZAR';
       this.titulo = 'EDICION DEL REPUESTO';
       this._repuestoService.obtenerRepuesto(this.code!).subscribe({
@@ -112,15 +98,12 @@ export class CreateRepuestoComponent implements OnInit, OnDestroy {
         error: (err) => {
           this.existeCode = false;
           this._errorService.msjError(err);
-          // Si el código de edición no existe, podríamos redirigir o mostrar un error más claro
-          this.router.navigate(['/dashboard']); // O a una página de error
+          this.router.navigate(['/dashboard']);
         }
       });
     } else {
-      // Modo creación, asegúrate de que el estado inicial sea el correcto
       this.buttonName = 'REGISTRAR';
       this.titulo = 'NUEVO REPUESTO';
-      // Asegúrate de que haya al menos un campo de imagen si estamos creando y no hay ninguno
       if (this.images.length === 0) {
         this.addImage();
       }
@@ -331,14 +314,8 @@ export class CreateRepuestoComponent implements OnInit, OnDestroy {
     }
   }
 
-  // No necesitamos un getter si 'images' ya es una propiedad de FormArray de la clase
-  // Simplemente usa 'this.images' directamente en la plantilla HTML
-  // get images(): FormArray {
-  //   return this.images;
-  // }
-
   addImage(): void {
-    if (this.images.length < 5) { // Limitar a 5 imágenes
+    if (this.images.length < 5) {
       this.images.push(this.createImageGroup());
     }
   }

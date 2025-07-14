@@ -15,28 +15,30 @@
                     <h2 class="stepper-section-title">Información Principal</h2>
 
                     <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-floating mb-3 mt-3">
-                                <input type="text" [(ngModel)]="repuesto.code" name="Código" required
-                                    (input)="comprobarCodigo()" placeholder="Código del repuesto"
-                                    #codeRepuestoInput="ngModel" class="form-control" id="code" [disabled]="isCode">
-                                <label for="code"><span class="text-danger">*</span>Código del repuesto:</label>
-                                <div
-                                    *ngIf="codeRepuestoInput.invalid && (codeRepuestoInput.dirty || codeRepuestoInput.touched)">
-                                    <small class="form-text text-danger" *ngIf="codeRepuestoInput.errors?.['required']">
-                                        El código del repuesto es obligatorio.
+                        <ng-container *ngIf="!isCode">
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3 mt-3">
+                                    <input type="text" [(ngModel)]="repuesto.code" name="Código" required
+                                        (input)="comprobarCodigo()" placeholder="Código del repuesto"
+                                        #codeRepuestoInput="ngModel" class="form-control" id="code" [disabled]="isCode">
+                                    <label for="code"><span class="text-danger">*</span>Código del repuesto:</label>
+                                    <div
+                                        *ngIf="codeRepuestoInput.invalid && (codeRepuestoInput.dirty || codeRepuestoInput.touched)">
+                                        <small class="form-text text-danger" *ngIf="codeRepuestoInput.errors?.['required']">
+                                            El código del repuesto es obligatorio.
+                                        </small>
+                                    </div>
+                                    <small id="verificarNombreCuenta" class="form-text text-danger"
+                                        *ngIf="codeRepuestoInput.valid && existeCode">
+                                        Este código de repuesto ya existe. Por favor, ingrese uno diferente.
+                                    </small>
+                                    <small class="form-text text-success"
+                                        *ngIf="codeRepuestoInput.valid && !existeCode && codeRepuestoInput.touched && !isCode">
+                                        Este campo no se podrá editar una vez creado. Por favor, revise bien el código.
                                     </small>
                                 </div>
-                                <small id="verificarNombreCuenta" class="form-text text-danger"
-                                    *ngIf="codeRepuestoInput.valid && existeCode">
-                                    Este código de repuesto ya existe. Por favor, ingrese uno diferente.
-                                </small>
-                                <small class="form-text text-success"
-                                    *ngIf="codeRepuestoInput.valid && !existeCode && codeRepuestoInput.touched && !isCode">
-                                    Este campo no se podrá editar una vez creado. Por favor, revise bien el código.
-                                </small>
                             </div>
-                        </div>
+                        </ng-container>
                         <div class="col-md-6">
                             <div class="form-floating mb-3 mt-3">
                                 <input type="text" [(ngModel)]="repuesto.name" name="Nombre" required
