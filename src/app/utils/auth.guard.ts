@@ -22,15 +22,11 @@ export class AuthRoleGuard implements CanActivate {
     }
 
     try {
-      // Verifica estado del token en backend
       await firstValueFrom(this._usuarioService.verificarEstadoToken());
 
-      // Decodifica roles del token
       const payload = JSON.parse(atob(token.split('.')[1]));
       const userRoles: string[] = payload.roles || [];
       const allowedRoles: string[] = route.data['roles'] || [];
-
-      // Comprueba si el usuario tiene al menos un rol permitido
       const hasRole = allowedRoles.some(role => userRoles.includes(role));
 
       if (!hasRole) {
@@ -40,12 +36,10 @@ export class AuthRoleGuard implements CanActivate {
       return true;
 
     } catch (error) {
-      // Token inválido o expirado, limpia y redirige login
       localStorage.removeItem('token');
       localStorage.removeItem('repuestoCantidades');
       localStorage.removeItem('repuestosSeleccionadosParaCompra');
       this._actualizarComponentService.notificarHeader();
-
       return this.router.createUrlTree(['/login']);
     }
   }
