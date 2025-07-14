@@ -20,7 +20,7 @@
 </div>
 
 <div class="container-fluid mt-5 mb-4">
-    <div class="section-title text-center mb-4">
+    <div class="section-title text-center mb-4 w-100">
         <h2>TODOS LOS REPUESTOS</h2>
         <p class="text-muted">Explora nuestro catálogo completo de repuestos disponibles.</p>
     </div>
@@ -54,7 +54,7 @@
                                     </h4>
                                 </div>
                             </a>
-                            <div class="card-footer border-0 pt-0 pb-3 px-3">
+                            <div class="border-0 pt-0 pb-3 px-3">
                                 <button class="btn add-to-cart-btn w-100" type="button" mat-raised-button
                                     [color]="!isAdded[i] ? 'primary' : 'link'" (click)="agregarAlCarrito(repuesto, i)"
                                     [disabled]="isAddingToCart[i]"> <span *ngIf="!isAdded[i] && !isAddingToCart[i]">
@@ -75,7 +75,7 @@
                 </ng-container>
             </ng-container>
             <ng-template #noRepuestos>
-                <div class="col-12">
+                            <div class="col-12 w-100">
                     <h3 class="text-center mt-5 text-muted">No se encontraron repuestos.</h3>
                 </div>
             </ng-template>
