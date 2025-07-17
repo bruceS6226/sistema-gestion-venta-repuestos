@@ -172,45 +172,47 @@
                 <mat-icon>receipt_long</mat-icon>
                 <span class="m-0">Detalles del pedido</span><br>
             </div><br>
-            <table id="cotizacion" class="table table-bordered mb-4 align-content-center">
-                <thead>
-                    <tr>
-                        <th scope="col" class="text-left">NOMBRE</th>
-                        <th scope="col" class="text-left">CANTIDAD</th>
-                        <th scope="col" class="text-right">SUBTOTAL</th>
-                        <th scope="col" class="text-right">TOTAL</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <ng-container *ngFor="let repuesto of repuestosSeleccionadosParaCompra">
+                    <div class="table-responsive">
+                <table id="cotizacion" class="table table-bordered mb-4 align-content-center">
+                    <thead>
                         <tr>
-                            <td class="font-light text-left">{{repuesto.name}}</td>
-                            <td class="font-light text-center">
-                                {{repuestoCantidades.get(repuesto.code!)}}
-                            </td>
-                            <td class="font-light text-right">${{repuesto.price ? (repuesto.price *
-                                (repuestoCantidades.get(repuesto.code!) ?? 1)).toFixed(2) : ''}}</td>
-                            <td class="font-light text-right">${{repuesto.price ? (repuesto.price *
-                                (repuestoCantidades.get(repuesto.code!) ?? 1)*1.15).toFixed(2) : ''}}</td>
+                            <th scope="col" class="text-left">NOMBRE</th>
+                            <th scope="col" class="text-left">CANTIDAD</th>
+                            <th scope="col" class="text-right">SUBTOTAL</th>
+                            <th scope="col" class="text-right">TOTAL</th>
                         </tr>
-                    </ng-container>
-                    <tr class="border-0">
-                        <td class="border-0" colspan="2"></td>
-                        <td class="border" style="background-color: #f8f9fa;">SUBTOTAL</td>
-                        <td class="border" style="background-color: #f8f9fa;">${{calcularSubTotal()}}</td>
-                    </tr>
-                    <tr class="border-0">
-                        <td class="border-0" colspan="2"></td>
-                        <td class="border" style="background-color: #f8f9fa;">IVA 15%</td>
-                        <td class="border" style="background-color: #f8f9fa;">${{calcularIVA(1.15)}}</td>
-                    </tr>
-                    <tr class="border-0">
-                        <td class="border-0" colspan="2"></td>
-                        <td class="border" style="background-color: #30a4342e;"><b>TOTAL</b></td>
-                        <td class="border" style="background-color: #30a4342e;"><b>${{calcularTotal()}}</b></td>
-                    </tr>
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        <ng-container *ngFor="let repuesto of repuestosSeleccionadosParaCompra">
+                            <tr>
+                                <td class="font-light text-left">{{repuesto.name}}</td>
+                                <td class="font-light text-center">
+                                    {{repuestoCantidades.get(repuesto.code!)}}
+                                </td>
+                                <td class="font-light text-right">${{repuesto.price ? (repuesto.price *
+                                    (repuestoCantidades.get(repuesto.code!) ?? 1)).toFixed(2) : ''}}</td>
+                                <td class="font-light text-right">${{repuesto.price ? (repuesto.price *
+                                    (repuestoCantidades.get(repuesto.code!) ?? 1)*1.15).toFixed(2) : ''}}</td>
+                            </tr>
+                        </ng-container>
+                        <tr class="border-0">
+                            <td class="border-0" colspan="2"></td>
+                            <td class="border" style="background-color: #f8f9fa;">SUBTOTAL</td>
+                            <td class="border" style="background-color: #f8f9fa;">${{calcularSubTotal()}}</td>
+                        </tr>
+                        <tr class="border-0">
+                            <td class="border-0" colspan="2"></td>
+                            <td class="border" style="background-color: #f8f9fa;">IVA 15%</td>
+                            <td class="border" style="background-color: #f8f9fa;">${{calcularIVA(1.15)}}</td>
+                        </tr>
+                        <tr class="border-0">
+                            <td class="border-0" colspan="2"></td>
+                            <td class="border" style="background-color: #30a4342e;"><b>TOTAL</b></td>
+                            <td class="border" style="background-color: #30a4342e;"><b>${{calcularTotal()}}</b></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
             <button class="button-paid w-100 text-light" type="button"
                 (click)="btnPagar.disabled = true; realizarPago(detalleUsuarioForm, btnPagar)" mat-raised-button
                 style="background-color: #30a434; display: flex; align-items: center; justify-content: center; gap: 8px;"
