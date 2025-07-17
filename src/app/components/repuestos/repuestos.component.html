@@ -43,10 +43,10 @@
               <td>{{ r.name }}</td>
               <td class="text-end">${{ r.price | number: '1.2-2' }}</td>
               <td class="text-center">
-                <span *ngIf="(r.stock ?? 0) <= 10" class="btn-rol btn-rol-low-stock">
+                <span *ngIf="(r.stock ?? 0) <= 5" class="btn-rol btn-rol-low-stock">
                   {{ r.stock }}
                 </span>
-                <span *ngIf="(r.stock ?? 0) > 10" class="btn-rol btn-rol-hight-stock">
+                <span *ngIf="(r.stock ?? 0) > 5" class="btn-rol btn-rol-hight-stock">
                   {{ r.stock }}
                 </span>
               </td>

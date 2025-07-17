@@ -94,14 +94,26 @@ export class DetalleCarritoComponent implements OnInit {
     }
   }
 
-  aumentarCantidad(code: string): void {
-    const cantidadActual = this.repuestoCantidades.get(code);
-    if (cantidadActual) {
+aumentarCantidad(code: string): void {
+  const cantidadActual = this.repuestoCantidades.get(code);
+  const repuesto = this.repuestosSeleccionadosParaCompra.find(repuesto => repuesto.code === code);
+
+  if (repuesto) {
+    const stockDisponible = repuesto.stock;
+
+    if (cantidadActual && cantidadActual < stockDisponible!) {
       this.repuestoCantidades.set(code, cantidadActual + 1);
       const repuestoCantidadesArray = Array.from(this.repuestoCantidades.entries());
       localStorage.setItem('repuestoCantidades', JSON.stringify(repuestoCantidadesArray));
+    } else {
+      
+          this._errorService.msjError('No hay suficiente stock disponible para este producto.');
+      
     }
+  } else {
+    console.error('El repuesto no fue encontrado.');
   }
+}
 
   disminuirCantidad(code: string): void {
     const cantidadActual = this.repuestoCantidades.get(code);

@@ -28,7 +28,7 @@
                             <mat-icon style="color: #ffffff;">menu</mat-icon>
                         </button>
                         <mat-menu #menuMobile="matMenu">
-                            <button mat-menu-item routerLink="/dashboard">Administrar repuestos</button>
+                            <button *ngIf="usuario.roles?.[0] === 'admin' || usuario.roles?.[0] === 'employee'" mat-menu-item routerLink="/dashboard">Administrar repuestos</button>
                             <a mat-menu-item href="/change-password">Cambiar contraseña</a>
                             <button mat-menu-item (click)="cerrarSesion()">Cerrar Sesión</button>
                         </mat-menu>
