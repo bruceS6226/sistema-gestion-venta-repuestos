@@ -5,12 +5,12 @@
 </div>
 <div class="container">
     <div class="row row-cols-1 row-cols-lg-2 w-100">
-        <div class="col-lg-7">
+        <div [ngClass]="{'w-100': !mostrarDetallePedido, 'col-lg-7': mostrarDetallePedido}" class="p-2">
             <div class="titulo gap-1 w-100">
                 <i class="bi bi-person-lines-fill"></i>
                 <span class="m-0">Detalles del cliente</span><br>
             </div>
-<form #detalleUsuarioForm="ngForm" (ngSubmit)="guardarDetalleUsuario(detalleUsuarioForm, guardarBtn)">
+            <form #detalleUsuarioForm="ngForm" (ngSubmit)="guardarDetalleUsuario(detalleUsuarioForm, guardarBtn)">
                 <div class="row row-cols-1 row-cols-sm-2">
                     <div class="col">
                         <div class="form-floating mb-2 mt-3">
@@ -156,16 +156,18 @@
                 <button class="w-100" type="submit" mat-raised-button color="primary"
                     (click)="guardarBtn.disabled = true; guardarDetalleUsuario(detalleUsuarioForm, guardarBtn)"
                     #guardarBtn>
-                    <ng-container *ngIf="!guardarBtn.disabled; else loadingTemplate">
-                        <i class="bi bi-person-vcard-fill"></i> Guardar información
-                    </ng-container>
-                    <ng-template #loadingTemplate>
-                        <mat-progress-spinner #spinner [diameter]="24" mode="indeterminate"></mat-progress-spinner>
-                    </ng-template></button>
+                <div class="d-flex align-items-center justify-content-center gap-2">
+                        <ng-container *ngIf="!guardarBtn.disabled; else loadingTemplate">
+                            <i class="bi bi-person-vcard-fill"></i> Guardar información
+                        </ng-container>
+                        <ng-template #loadingTemplate>
+                            <mat-progress-spinner #spinner [diameter]="24" mode="indeterminate"></mat-progress-spinner>
+                        </ng-template>
+                    </div></button>
 
             </form>
         </div>
-<div *ngIf="mostrarDetallePedido" class="col-lg-5">
+        <div *ngIf="mostrarDetallePedido" class="col-lg-5 p-2">
             <div class="titulo gap-1 w-100">
                 <mat-icon>receipt_long</mat-icon>
                 <span class="m-0">Detalles del pedido</span><br>
@@ -194,29 +196,35 @@
                     </ng-container>
                     <tr class="border-0">
                         <td class="border-0" colspan="2"></td>
-                        <td class="border">SUBTOTAL</td>
-                        <td class="border">${{calcularSubTotal()}}</td>
+                        <td class="border" style="background-color: #f8f9fa;">SUBTOTAL</td>
+                        <td class="border" style="background-color: #f8f9fa;">${{calcularSubTotal()}}</td>
                     </tr>
                     <tr class="border-0">
                         <td class="border-0" colspan="2"></td>
-                        <td class="border">IVA 15%</td>
-                        <td class="border">${{calcularIVA(1.15)}}</td>
+                        <td class="border" style="background-color: #f8f9fa;">IVA 15%</td>
+                        <td class="border" style="background-color: #f8f9fa;">${{calcularIVA(1.15)}}</td>
                     </tr>
                     <tr class="border-0">
                         <td class="border-0" colspan="2"></td>
-                        <td class="border"><b>TOTAL</b></td>
-                        <td class="border"><b>${{calcularTotal()}}</b></td>
+                        <td class="border" style="background-color: #30a4342e;"><b>TOTAL</b></td>
+                        <td class="border" style="background-color: #30a4342e;"><b>${{calcularTotal()}}</b></td>
                     </tr>
                 </tbody>
             </table>
-            <button class="w-100 text-light" type="button" (click)="realizarPago(detalleUsuarioForm, btnPagar)"
-                mat-raised-button style="background-color: #6B8E23;" #btnPagar>
-                <ng-container *ngIf="!btnPagar.disabled; else loadingTemplate">
-                    <mat-icon>paid</mat-icon> Realizar el pago
-                </ng-container>
-                <ng-template #loadingTemplate>
-                    <mat-progress-spinner #spinner [diameter]="24" mode="indeterminate"></mat-progress-spinner>
-                </ng-template></button>
+            <button class="button-paid w-100 text-light" type="button"
+                (click)="btnPagar.disabled = true; realizarPago(detalleUsuarioForm, btnPagar)" mat-raised-button
+                style="background-color: #30a434; display: flex; align-items: center; justify-content: center; gap: 8px;"
+                #btnPagar>
+                <div class="d-flex align-items-center justify-content-center gap-2">
+                    <ng-container *ngIf="!btnPagar.disabled; else loadingTemplate">
+                        <mat-icon>paid</mat-icon> Realizar el pago
+                    </ng-container>
+                    <ng-template #loadingTemplate>
+                        <mat-progress-spinner #spinner [diameter]="24" mode="indeterminate"></mat-progress-spinner>
+                    </ng-template>
+                </div>
+            </button>
+
         </div>
     </div>
 

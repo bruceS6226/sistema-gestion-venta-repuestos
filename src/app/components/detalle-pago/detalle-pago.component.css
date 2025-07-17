@@ -1,47 +1,9 @@
-/* Estilos existentes */
 .container {
     max-width: 1350px !important;
 }
 
-.return {
-    margin-top: 1rem;
-    margin-left: 1rem;
-}
-
-.titulo {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #333;
-    border-bottom: 2px solid #007bff;
-    padding-bottom: 0.5rem;
-    margin-bottom: 1.5rem;
-}
-
-.titulo mat-icon, .titulo i {
-    font-size: 1.8rem;
-    vertical-align: middle;
-}
-
-.form-floating label.label-filled {
-    color: rgb(110, 110, 110) !important;
-}
-
-.form-select.ng-empty.ng-touched {
-    border-color: #dc3545;
-}
-.form-select.ng-valid.ng-touched {
-    border-color: #28a745;
-}
-.form-select.placeholder-option {
-    color: rgb(150, 150, 150);
-}
-
 #cotizacion {
     border-collapse: collapse;
-    border: 1px solid #dee2e6;
 }
 
 #cotizacion th, #cotizacion td {
@@ -74,60 +36,3 @@
     border-bottom: 0 !important; 
 }
 
-@media (max-width: 767px) {
-    #cotizacion thead {
-        display: none;
-    }
-
-    #cotizacion tr {
-        display: block;
-        margin-bottom: 0.625em;
-        border: 1px solid #dee2e6;
-        padding: 10px;
-    }
-
-    #cotizacion td {
-        display: block;
-        text-align: right !important;
-        border-bottom: 1px dotted #ccc;
-    }
-
-    #cotizacion td:last-child {
-        border-bottom: 0;
-    }
-
-    #cotizacion td::before {
-        content: attr(data-label);
-        float: left;
-        font-weight: bold;
-        text-transform: uppercase;
-        margin-right: 10px;
-    }
-
-    #cotizacion tbody tr.border-0 {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: flex-end;
-        margin-bottom: 0;
-        border: none;
-    }
-    #cotizacion tbody tr.border-0 td {
-        flex: 0 0 auto;
-        width: auto;
-        border: none;
-        text-align: right !important;
-        padding: 5px 10px;
-    }
-    #cotizacion tbody tr.border-0 td:first-child {
-        flex: 1 1 100%;
-        text-align: left !important;
-    }
-    #cotizacion tbody tr.border-0 td:nth-child(3),
-    #cotizacion tbody tr.border-0 td:nth-child(4) {
-        width: 50%;
-        text-align: right !important;
-    }
-    #cotizacion tbody tr.border-0 td:nth-child(3) {
-        font-weight: bold;
-    }
-}
