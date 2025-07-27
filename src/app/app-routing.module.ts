@@ -10,7 +10,6 @@ import { RestrictionSignLoginGuard } from './utils/restriction-sign-login.guard'
 import { ChangePasswordComponent } from './components/change-password/change-password.component';
 import { AuthRoleGuard } from './utils/auth.guard';
 import { DetalleRepuestoComponent } from './components/detalle-repuesto/detalle-repuesto.component';
-import { AuthGoogleComponent } from './components/auth-google/auth-google.component';
 import { BuscarRepuestoComponent } from './components/buscar-repuesto/buscar-repuesto.component';
 import { DetalleCarritoComponent } from './components/detalle-carrito/detalle-carrito.component';
 import { DetallePagoComponent } from './components/detalle-pago/detalle-pago.component';
