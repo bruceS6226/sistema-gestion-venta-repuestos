@@ -156,14 +156,15 @@
                 <button class="w-100" type="submit" mat-raised-button color="primary"
                     (click)="guardarBtn.disabled = true; guardarDetalleUsuario(detalleUsuarioForm, guardarBtn)"
                     #guardarBtn>
-                <div class="d-flex align-items-center justify-content-center gap-2">
+                    <div class="d-flex align-items-center justify-content-center gap-2">
                         <ng-container *ngIf="!guardarBtn.disabled; else loadingTemplate">
                             <i class="bi bi-person-vcard-fill"></i> Guardar información
                         </ng-container>
                         <ng-template #loadingTemplate>
                             <mat-progress-spinner #spinner [diameter]="24" mode="indeterminate"></mat-progress-spinner>
                         </ng-template>
-                    </div></button>
+                    </div>
+                </button>
 
             </form>
         </div>
@@ -189,15 +190,14 @@
                                 <td class="font-light text-center">
                                     {{repuestoCantidades.get(repuesto.code!)}}
                                 </td>
+                                <td class="font-light text-right">${{repuesto.price}}</td>
                                 <td class="font-light text-right">${{repuesto.price ? (repuesto.price *
                                     (repuestoCantidades.get(repuesto.code!) ?? 1)).toFixed(2) : ''}}</td>
-                                <td class="font-light text-right">${{repuesto.price ? (repuesto.price *
-                                    (repuestoCantidades.get(repuesto.code!) ?? 1)*1.15).toFixed(2) : ''}}</td>
                             </tr>
                         </ng-container>
                         <tr class="border-0">
                             <td class="border-0" colspan="2"></td>
-                            <td class="border" style="background-color: #f8f9fa;">SUBTOTAL</td>
+                            <td class="border" style="background-color: #f8f9fa;">TOTAL SIN IVA</td>
                             <td class="border" style="background-color: #f8f9fa;">${{calcularSubTotal()}}</td>
                         </tr>
                         <tr class="border-0">

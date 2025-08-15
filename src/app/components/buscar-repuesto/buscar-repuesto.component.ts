@@ -389,18 +389,13 @@ export class BuscarRepuestoComponent implements OnInit {
   }
 
   agregarAlCarrito(repuesto: Repuesto, index: number) {
-    if (this.isAdded[index] || this.isAddingToCart[index]) {
-      return;
-    }
+    if (this.isAdded[index] || this.isAddingToCart[index]) return;
 
     this.isAddingToCart[index] = true;
-
     let repuestosSeleccionadosParaCompra: Repuesto[] = [];
     const repuestosJson = localStorage.getItem('repuestosSeleccionadosParaCompra');
 
-    if (repuestosJson) {
-      repuestosSeleccionadosParaCompra = JSON.parse(repuestosJson) as Repuesto[];
-    }
+    if (repuestosJson) repuestosSeleccionadosParaCompra = JSON.parse(repuestosJson) as Repuesto[];
 
     const existeEnCarrito = repuestosSeleccionadosParaCompra.some(
       (r) => r.code === repuesto.code
@@ -408,7 +403,6 @@ export class BuscarRepuestoComponent implements OnInit {
 
     if (!existeEnCarrito) {
       repuestosSeleccionadosParaCompra.push(repuesto);
-
       const promesas = repuestosSeleccionadosParaCompra.map(item => {
         return new Promise<void>((resolve) => {
           if (item.code) {
@@ -438,3 +432,4 @@ export class BuscarRepuestoComponent implements OnInit {
     }
   }
 }
+

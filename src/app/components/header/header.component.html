@@ -2,16 +2,12 @@
     <div class="header-container navbar-toggler">
         <div class="header-container d-flex flex-column d-xl-none p-3"
             style="background-color: #71797E; color: #ffffff;">
-            <!-- Top bar con íconos -->
             <div class="d-flex justify-content-between align-items-center w-100">
-                <!-- Logo a la izquierda -->
                 <a href="/" title="Home" rel="Home">
                     <img style="width: 50px;" src="../../../assets/img/icono.png" alt="Home">
                 </a>
-
-                <!-- Íconos a la derecha -->
+        
                 <div class="d-flex align-items-center gap-2">
-                    <!-- Botón para mostrar buscador (primero porque es más destacado) -->
                     <button type="button" mat-icon-button (click)="mostrarBuscador = !mostrarBuscador">
                         <mat-icon style="color: #ffffff;">search</mat-icon>
                     </button>
@@ -42,7 +38,7 @@
                 </div>
             </div>
 
-            <!-- Formulario de búsqueda (oculto/visible por botón) -->
+            <!-- Formulario -->
             <form *ngIf="mostrarBuscador" class="input-group mt-2" (ngSubmit)="buscar(textoBuscar)" >
                 <input type="text" class="form-control" placeholder="Busca tu repuesto..." name="busqueda"
                     [matAutocomplete]="auto" (keyup)="onInputChange()" [(ngModel)]="textoBuscar"

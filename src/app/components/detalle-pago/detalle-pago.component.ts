@@ -23,6 +23,7 @@ export class DetallePagoComponent implements OnInit {
   public cantidadRepuestosSeleccionadosParaComprar: number = 0;
   public repuestoCantidades: Map<string, number> = new Map<string, number>();
   public items: Items[] = [];
+  public  iva: number = environment.IVA/100;
   @ViewChild('detalleUsuarioForm', { static: false }) detalleUsuarioForm!: NgForm;
 
   provincias: string[] = ['Pichincha', 'Guayas', 'Azuay', 'Manabí', 'Tungurahua'];
@@ -161,6 +162,7 @@ export class DetallePagoComponent implements OnInit {
         },
         error: (e: HttpErrorResponse) => {
           this._errorService.msjError(e);
+                btn.disabled = false;
         }
       })
     } else {
